@@ -15,4 +15,5 @@ public class RobotMap
   //sensors
 
   //joysticks
+  public static int k_joystick1 = 0;
 }

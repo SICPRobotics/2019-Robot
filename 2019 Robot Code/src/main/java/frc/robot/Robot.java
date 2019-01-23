@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -11,14 +12,20 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot 
 {
   public static DriveTrain driveTrain = new DriveTrain();
-  public static OI m_oi;
+  public static OI oi;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  Joystick j1;
+
   @Override
-  public void robotInit() {
-    m_oi = new OI();
+  public void robotInit() 
+  {
+    oi = new OI();
+
+    j1 = new Joystick(RobotMap.k_joystick1);
+
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -60,6 +67,7 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();
+    driveTrain.cheesyDrive(j1);
   }
 
   @Override
