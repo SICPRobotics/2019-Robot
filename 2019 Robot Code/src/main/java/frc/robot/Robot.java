@@ -32,10 +32,16 @@ public class Robot extends TimedRobot
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() 
+  {
+    //TODO: any constant updates we want to record
+  }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() 
+  {
+    //set everything to 0/turn stuff off/cancel all commands
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -67,6 +73,7 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();
+    
     driveTrain.cheesyDrive(j1);
   }
 
