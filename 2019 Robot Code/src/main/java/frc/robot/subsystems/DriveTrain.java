@@ -14,6 +14,9 @@ public class DriveTrain extends Subsystem
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
 
+  //encoders
+  //gyro
+
   public DriveTrain()
   {
     frontL = new WPI_TalonSRX(RobotMap.k_frontL);
@@ -55,4 +58,6 @@ public class DriveTrain extends Subsystem
 
     robotBase.arcadeDrive(moveValue, rotateValue, true);
   }
+  
+  //public void tankDrive(Joystick j) {}
 }
