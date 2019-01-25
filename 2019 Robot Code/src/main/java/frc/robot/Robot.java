@@ -22,6 +22,9 @@ public class Robot extends TimedRobot
   @Override
   public void robotInit() 
   {
+    driveTrain = new DriveTrain();
+    driveTrain.resetGyro();
+    
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);

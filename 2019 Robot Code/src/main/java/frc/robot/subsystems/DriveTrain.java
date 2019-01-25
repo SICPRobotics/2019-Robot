@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,7 +16,7 @@ public class DriveTrain extends Subsystem
   SpeedControllerGroup left, right;
 
   //encoders
-  //gyro
+  ADXRS450_Gyro gyro; 
 
   public DriveTrain()
   {
@@ -28,6 +29,8 @@ public class DriveTrain extends Subsystem
     right = new SpeedControllerGroup(frontR, rearR);
 
     robotBase = new DifferentialDrive(left, right);
+
+    gyro = new ADXRS450_Gyro();
   }
   
   @Override
@@ -37,7 +40,7 @@ public class DriveTrain extends Subsystem
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public void cheesyDrive(Joystick j)
+  public void cheesyDrive(Joystick j) //test
   {
     double scale = j.getRawAxis(3) * -1;
     scale = ((scale + 1) / 5) + .6;
@@ -59,5 +62,27 @@ public class DriveTrain extends Subsystem
     robotBase.arcadeDrive(moveValue, rotateValue, true);
   }
   
-  //public void tankDrive(Joystick j) {}
+  public void tankDrive(Joystick jL, Joystick jR) //test
+  {
+    double leftValue = jL.getRawAxis(1);
+    if (Math.abs(leftValue) < .005)
+      leftValue = 0;
+    double rightValue = jR.getRawAxis(1);
+    if (Math.abs(rightValue) < .005)
+      rightValue = 0;
+
+    left.set(leftValue);
+    right.set(rightValue);    
+  }
+
+  public double resetGyro() //test
+  {
+    gyro.reset();
+    return gyro.getAngle();
+  }
+
+  public double gyroAngle() //test
+  {
+    return gyro.getAngle();
+  }
 }
