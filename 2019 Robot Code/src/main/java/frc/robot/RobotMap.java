@@ -16,4 +16,6 @@ public class RobotMap
 
   //joysticks
   public static int k_joystick1 = 0;
+  public static int k_joystick2 = 2;
+  public static int k_xbox = 1;
 }

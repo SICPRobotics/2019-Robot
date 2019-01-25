@@ -17,18 +17,19 @@ public class Robot extends TimedRobot
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  Joystick j1;
-
+  Joystick j1, j2;
+  
   @Override
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
     driveTrain.resetGyro();
-    
+
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);
-
+    j2 = new Joystick(RobotMap.k_joystick2);
+   
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
