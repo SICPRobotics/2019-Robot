@@ -3,16 +3,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveForward extends Command {
-  public DriveForward() 
+public class DriveForward extends Command 
+{
+  double setpt;
+
+  public DriveForward(double setpoint) 
   {
-    // Use requires() here to declare subsystem dependencies
     requires(Robot.driveTrain);
+    setpt = setpoint;
   }
 
-  // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  protected void initialize() 
+  {
+    Robot.driveTrain.setSet(setpt);
+    Robot.driveTrain.enable();
   }
 
   // Called repeatedly when this Command is scheduled to run

@@ -6,11 +6,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 
-public class DriveTrain extends Subsystem 
+public class DriveTrain extends PIDSubsystem 
 {
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
@@ -20,6 +20,9 @@ public class DriveTrain extends Subsystem
 
   public DriveTrain()
   {
+    super("DriveTrain", 1, 2, 3);
+    setSetpoint(0);
+
     frontL = new WPI_TalonSRX(RobotMap.k_frontL);
     rearL = new WPI_TalonSRX(RobotMap.k_rearL);
     rearL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
@@ -41,6 +44,23 @@ public class DriveTrain extends Subsystem
   {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+  }
+
+  public void setSet(double setpoint)
+  {
+    setSetpoint(setpoint);
+  }
+  
+  @Override
+  protected double returnPIDInput() 
+  {
+    return gyro.getAngle();
+  }
+
+  @Override
+  protected void usePIDOutput(double output) {
+    // Use output to drive your system, like a motor
+    // e.g. yourMotor.set(output);
   }
 
   public void cheesyDrive(Joystick j) //test
@@ -92,5 +112,16 @@ public class DriveTrain extends Subsystem
   public double gyroAngle() //test
   {
     return gyro.getAngle();
+  }
+
+  public double encDistance()
+  {
+    double rightEnc, leftEnc;
+    int nativeUnits1 = rearL.getSelectedSensorPosition(0);
+    leftEnc = nativeUnits1 * .0046019424 * -1;
+    int nativeUnits2 = rearR.getSelectedSensorPosition(0);
+    rightEnc = nativeUnits2 * .0046019424;
+
+    return (leftEnc + rightEnc) / 2;
   }
 }

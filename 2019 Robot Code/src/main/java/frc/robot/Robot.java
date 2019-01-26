@@ -24,13 +24,13 @@ public class Robot extends TimedRobot
   {
     driveTrain = new DriveTrain();
     driveTrain.resetGyro();
-
+    
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);
     j2 = new Joystick(RobotMap.k_joystick2);
    
-    chooser.setDefaultOption("Default Auto", new DriveForward());
+    chooser.setDefaultOption("Default Auto", new DriveForward(0));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
   }
@@ -51,7 +51,8 @@ public class Robot extends TimedRobot
   public void disabledPeriodic() {}
 
   @Override
-  public void autonomousInit() {
+  public void autonomousInit() 
+  {
     autoCommand = chooser.getSelected();
 
     if (autoCommand != null) 
