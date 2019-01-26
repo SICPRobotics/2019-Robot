@@ -78,8 +78,8 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();
-    
     driveTrain.cheesyDrive(j1);
+    //driveTrain.calibrateTalons(j1);
   }
 
   @Override

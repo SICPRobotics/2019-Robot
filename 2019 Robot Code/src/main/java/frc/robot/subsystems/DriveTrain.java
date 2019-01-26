@@ -75,6 +75,11 @@ public class DriveTrain extends Subsystem
     right.set(rightValue);    
   }
 
+  public void calibrateTalons(Joystick j)
+  {
+    robotBase.arcadeDrive(j.getRawAxis(1), 0);
+  }
+
   public double resetGyro() //test
   {
     gyro.reset();
