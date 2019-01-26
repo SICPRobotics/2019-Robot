@@ -16,7 +16,6 @@ public class DriveTrain extends Subsystem
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
 
-  //encoders
   ADXRS450_Gyro gyro; 
 
   public DriveTrain()
