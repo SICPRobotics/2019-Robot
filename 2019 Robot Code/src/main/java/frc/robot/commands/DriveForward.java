@@ -3,8 +3,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ExampleCommand extends Command {
-  public ExampleCommand() {
+public class DriveForward extends Command {
+  public DriveForward() 
+  {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.driveTrain);
   }

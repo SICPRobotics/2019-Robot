@@ -1,9 +1,12 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import frc.robot.RobotMap;
 
 public class Elevator extends PIDSubsystem 
 {
+  Talon arm1, arm2;
 
   public Elevator() 
   {
@@ -13,6 +16,9 @@ public class Elevator extends PIDSubsystem
     // setSetpoint() - Sets where the PID controller should move the system
     // to
     // enable() - Enables the PID controller.
+
+    //arm1 = new Talon(RobotMap.k_arm1);
+
   }
 
   @Override

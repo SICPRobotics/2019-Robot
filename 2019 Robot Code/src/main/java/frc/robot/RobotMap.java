@@ -9,7 +9,9 @@ public class RobotMap
   public static int k_frontR = 3;
 
   //other motors
-
+  public static int k_arm1 = 4;
+  public static int k_arm2 = 5;
+  
   //solenoids
 
   //sensors
