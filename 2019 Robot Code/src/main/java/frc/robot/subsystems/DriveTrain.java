@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -22,8 +23,11 @@ public class DriveTrain extends Subsystem
   {
     frontL = new WPI_TalonSRX(RobotMap.k_frontL);
     rearL = new WPI_TalonSRX(RobotMap.k_rearL);
+    rearL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+
     frontR = new WPI_TalonSRX(RobotMap.k_frontR);
     rearR = new WPI_TalonSRX(RobotMap.k_rearR);
+    rearR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
 
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
