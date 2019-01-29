@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,6 +30,8 @@ public class Robot extends TimedRobot
     m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   @Override
@@ -67,7 +70,7 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();
-    driveTrain.cheesyDrive(j1);
+    driveTrain.driveFullSpeed();
   }
 
   @Override

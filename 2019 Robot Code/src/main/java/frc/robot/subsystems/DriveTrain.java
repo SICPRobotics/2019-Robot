@@ -55,4 +55,9 @@ public class DriveTrain extends Subsystem
 
     robotBase.arcadeDrive(moveValue, rotateValue, true);
   }
+
+  public void driveFullSpeed()
+  {
+    robotBase.arcadeDrive(0.5, 0);
+  }
 }
