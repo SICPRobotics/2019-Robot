@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveForward;
+import frc.robot.commands.SetDrivePID;
 import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -34,7 +34,7 @@ public class Robot extends TimedRobot
     j1 = new Joystick(RobotMap.k_joystick1);
     j2 = new Joystick(RobotMap.k_joystick2);
    
-    chooser.setDefaultOption("Default Auto", new DriveForward(0));
+    chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
   }
