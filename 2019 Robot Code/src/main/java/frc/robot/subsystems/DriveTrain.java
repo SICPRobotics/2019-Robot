@@ -45,11 +45,6 @@ public class DriveTrain extends PIDSubsystem
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
-
-  public void setSet(double setpoint)
-  {
-    setSetpoint(setpoint);
-  }
   
   @Override
   protected double returnPIDInput() 

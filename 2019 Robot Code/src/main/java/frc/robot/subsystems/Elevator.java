@@ -17,8 +17,7 @@ public class Elevator extends PIDSubsystem
     // to
     // enable() - Enables the PID controller.
 
-    //arm1 = new WPI_TalonSRX(RobotMap.k_arm1);
-
+    arm1 = new WPI_TalonSRX(RobotMap.k_arm1);
   }
 
   @Override

@@ -24,4 +24,9 @@ public class RobotMap
 
   //auto drive distance
   public static int k_autoForward = 0;
+
+  //pot heights
+  public static int k_cargoShip = 0;
+  public static int k_midHatch = 0;
+  public static int k_topHatch = 0;
 }
