@@ -7,11 +7,15 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveForward;
+import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 
 public class Robot extends TimedRobot 
 {
   public static DriveTrain driveTrain = new DriveTrain();
+  public static Elevator elevator = new Elevator();
+  public static Beak beak = new Beak();
   public static OI oi;
 
   Command autoCommand;

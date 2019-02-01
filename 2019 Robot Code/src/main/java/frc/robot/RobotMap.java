@@ -13,7 +13,8 @@ public class RobotMap
   public static int k_arm2 = 5;
 
   //solenoids
-
+  public static int k_beakSolo1 = 0;
+  public static int k_beakSolo2 = 1;
   //sensors
 
   //joysticks
