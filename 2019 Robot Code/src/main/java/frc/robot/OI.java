@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.ToggleBeak;
 
 public class OI 
 {
@@ -19,6 +20,11 @@ public class OI
   Button leftThumb = new JoystickButton(xbox, 9); //open
   Button rightThumb = new JoystickButton(xbox, 10); //open
  
+  public OI()
+  {
+    buttonX.whenPressed(new ToggleBeak());
+  }
+
   // Start the command when the button is pressed and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenPressed(new ExampleCommand());

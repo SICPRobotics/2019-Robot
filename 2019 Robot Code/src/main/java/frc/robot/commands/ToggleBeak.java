@@ -7,7 +7,7 @@ public class ToggleBeak extends Command
 {
   public boolean direction = true;
 
-  public ToggleBeak(double setpoint) 
+  public ToggleBeak() 
   {
     requires(Robot.beak);
   }
