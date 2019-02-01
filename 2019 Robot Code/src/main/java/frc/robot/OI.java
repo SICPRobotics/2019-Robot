@@ -10,10 +10,10 @@ public class OI
 {
   XboxController xbox = new XboxController(RobotMap.k_xbox);
 
-  Button buttonA = new JoystickButton(xbox, 1); //open
-  Button buttonB = new JoystickButton(xbox, 2); //open
-  Button buttonX = new JoystickButton(xbox, 3); //open
-  Button buttonY = new JoystickButton(xbox, 4); //open
+  Button buttonA = new JoystickButton(xbox, 1); 
+  Button buttonB = new JoystickButton(xbox, 2); 
+  Button buttonX = new JoystickButton(xbox, 3); 
+  Button buttonY = new JoystickButton(xbox, 4); 
   Button buttonLB = new JoystickButton(xbox, 5); //open
   Button buttonRB = new JoystickButton(xbox, 6); //open
   Button buttonBack = new JoystickButton(xbox, 7); //open
@@ -27,7 +27,6 @@ public class OI
     buttonB.whenPressed(new MoveElevator(RobotMap.k_midHatch));
     buttonX.whenPressed(new ToggleBeak());
     buttonY.whenPressed(new MoveElevator(RobotMap.k_topHatch));
-
   }
 
   // Start the command when the button is pressed and let it run the command
