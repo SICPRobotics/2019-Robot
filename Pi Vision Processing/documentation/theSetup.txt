@@ -1,0 +1,14 @@
+This is how we set up our Pi. You can connect to frcvision.local by connecting to the RoboRIO's WiFi when you use this setup.
+
+== Ethernet
+-- USB
+^^ Ribbon Cable
+
+ Pi 
+ |=== Radio
+ |    |=== RoboRIO
+ |
+ |->= IP Camera
+ |--- USB Cameras
+ |^^^ Ribbon Cable Camera
+

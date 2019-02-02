@@ -1,10 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
@@ -20,9 +23,10 @@ public class Robot extends TimedRobot
 
   Joystick j1;
 
+
+
   @Override
-  public void robotInit() 
-  {
+  public void robotInit() {
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);
@@ -32,6 +36,9 @@ public class Robot extends TimedRobot
     SmartDashboard.putData("Auto mode", m_chooser);
 
     CameraServer.getInstance().startAutomaticCapture();
+
+    //Network Tables
+    
   }
 
   @Override
@@ -41,7 +48,19 @@ public class Robot extends TimedRobot
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    NetworkTable table = inst.getTable("/WolfbyteVision");
+    NetworkTableEntry entry = inst.getEntry("x");
+    SmartDashboard.putNumber("Output from vision", entry.getDouble(111));
+    System.out.println("vision output x: " + entry.getDouble(111));
+    NetworkTableEntry entry2 = inst.getEntry("y");
+    //entry2.setDouble(entry2.getDouble(0)+0.1);
+    System.out.println("vision output y: " + entry2.getDouble(0));
+
+    
+
+  }
 
   @Override
   public void autonomousInit() {

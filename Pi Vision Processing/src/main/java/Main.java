@@ -1,3 +1,4 @@
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -5,6 +6,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,15 +20,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.MjpegServer;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.vision.VisionPipeline;
 import edu.wpi.first.vision.VisionThread;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
+import org.opencv.core.RotatedRect;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.video.Video;
+import org.opencv.videoio.VideoCapture;
 
 //Java Example Project
 //Currently works
@@ -64,6 +79,13 @@ import org.opencv.core.Mat;
            }
        ]
    }
+ */
+
+/* public class NetWorkTablesDesktopClinet{
+   public static void main(String[] args){
+     new NetworkTablesDesktopClient().run();
+   }
+ }
  */
 
 public final class Main {
@@ -121,6 +143,8 @@ public final class Main {
     cameraConfigs.add(cam);
     return true;
   }
+
+  
 
   /**
    * Read configuration file.
@@ -212,6 +236,29 @@ public final class Main {
     }
   }
 
+  public static NetworkTableEntry setUpNetworkTables(){ 
+    // start NetworkTables
+     NetworkTableInstance ntinst = NetworkTableInstance.getDefault();
+     if (server) {
+       System.out.println("Setting up NetworkTables server");
+       ntinst.startServer();
+     } else {
+       System.out.println("Setting up NetworkTables client for team " + team);
+       ntinst.setNetworkIdentity("Raspberry Pi");
+       ntinst.startClientTeam(5822);
+       ntinst.setUpdateRate(0.01); 
+     }
+ 
+     NetworkTable table = ntinst.getTable("/SmartDashboard");
+     NetworkTableEntry entry = table.getEntry("centerVal");
+     return entry;
+
+  }
+
+  public static void updateNetworkTables(NetworkTableEntry entry, int inc){
+    entry.setDouble(entry.getDouble(0)+1);
+    System.out.println(entry.getDouble(0.0));
+  }
   /**
    * Main.
    */
@@ -219,21 +266,27 @@ public final class Main {
     if (args.length > 0) {
       configFile = args[0];
     }
+/*
+    VideoCapture capture = new VideoCapture();
+    capture.open("http://10.58.22.11/mjpg/video.mjpg");
+
+    capture.read(rgb);
+
+    */
 
     // read configuration
     if (!readConfig()) {
       return;
     }
 
-    // start NetworkTables
-    NetworkTableInstance ntinst = NetworkTableInstance.getDefault();
-    if (server) {
-      System.out.println("Setting up NetworkTables server");
-      ntinst.startServer();
-    } else {
-      System.out.println("Setting up NetworkTables client for team " + team);
-      ntinst.startClientTeam(team);
-    }
+    System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
+    Mat rgb = new Mat();
+
+    VideoSource axisCamera = new AxisCamera("wolfbyte axis camera","10.58.22.11");
+    
+
+    //Imgcodecs.imwrite("/home/pi/RawImage.jpg", rgb);
 
     // start cameras
     List<VideoSource> cameras = new ArrayList<>();
@@ -242,24 +295,65 @@ public final class Main {
     }
 
     // start image processing on camera 0 if present
-    /*if (cameras.size() >= 1) {
-      VisionThread visionThread = new VisionThread(cameras.get(0),
+    //if (axisCamera.isConnected()) {
+      /*VisionThread visionThread = new VisionThread(cameras.get(0),
               new MyPipeline(), pipeline -> {
         // do something with pipeline results
+      });*/
+
+      CvSink sink = new CvSink("opencv_wolfbyte axis camera");
+      sink.setSource(axisCamera);
+      sink.grabFrame(rgb);
+
+      NetworkTableEntry entry = setUpNetworkTables();
+      //something like this for GRIP:
+      VisionThread visionThread = new VisionThread(axisCamera, new GripPipeline(), pipeline -> {
+        /*for(int i =0; i < pipeline.findContoursOutput().size(); i++){
+          System.out.println(pipeline.)
+        }*/
+        /*System.out.println("Pipeline ran");
+        for (MatOfPoint tape : pipeline.filterContoursOutput()){
+
+          System.out.println("MatOfPoint: ");
+          for (Point point : tape.toList()) {
+            //System.out.print(point.toString() + ", ");
+
+          }
+        }*/
+        List<MatOfPoint> contours = pipeline.filterContoursOutput();
+        if (contours.size() >= 2) {
+          RotatedRect rect0 = Imgproc.minAreaRect(new MatOfPoint2f(contours.get(0).toArray()));
+          RotatedRect rect1 = Imgproc.minAreaRect(new MatOfPoint2f(contours.get(1).toArray()));
+          RotatedRect left;
+          RotatedRect right;
+          if (rect0.center.x > rect1.center.x) {
+            left = rect1;
+            right = rect0;
+          } else {
+            left = rect0;
+            right = rect1;
+          }
+          double center = left.center.x + right.center.x;
+          center = center /2;
+          System.out.println("Center: " + center);
+          entry.setDouble(center);
+        }
       });
-      /* something like this for GRIP:
-      VisionThread visionThread = new VisionThread(cameras.get(0),
-              new GripPipeline(), pipeline -> {
-        ...
-      });
-       */
-      //visionThread.start();
-    //}*/
+      
+      visionThread.start();
+   // }
 
     // loop forever
+    int inc = 0;
+
     for (;;) {
+      System.out.println("Ran");
+      //updateNetworkTables(entry, inc);
+      inc++;
+    
+
       try {
-        Thread.sleep(10000);
+        Thread.sleep(3000);
       } catch (InterruptedException ex) {
         return;
       }
