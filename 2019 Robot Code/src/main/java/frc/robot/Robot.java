@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -22,7 +23,8 @@ public class Robot extends TimedRobot
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   Joystick j1, j2;
-  
+  //Button j1
+
   @Override
   public void robotInit() 
   {
@@ -40,10 +42,7 @@ public class Robot extends TimedRobot
   }
 
   @Override
-  public void robotPeriodic() 
-  {
-    //TODO: any constant updates we want to record
-  }
+  public void robotPeriodic() {}
 
   @Override
   public void disabledInit() 
@@ -84,7 +83,6 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
     driveTrain.cheesyDrive(j1);
-    //driveTrain.calibrateTalons(j1);
   }
 
   @Override

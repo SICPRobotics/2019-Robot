@@ -53,7 +53,8 @@ public class DriveTrain extends PIDSubsystem
   }
 
   @Override
-  protected void usePIDOutput(double output) {
+  protected void usePIDOutput(double output) 
+  {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
   }
@@ -93,10 +94,7 @@ public class DriveTrain extends PIDSubsystem
     right.set(rightValue);    
   }
 
-  public void calibrateTalons(Joystick j)
-  {
-    robotBase.arcadeDrive(j.getRawAxis(1), 0);
-  }
+
 
   public double resetGyro() //test
   {
