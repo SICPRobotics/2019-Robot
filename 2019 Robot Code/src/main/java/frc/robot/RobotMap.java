@@ -11,6 +11,8 @@ public class RobotMap
   //other motors
   public static int k_arm1 = 4;
   public static int k_arm2 = 5;
+  public static int k_claws1 = 6;
+  public static int k_claws2 = 7;
 
   //solenoids
   public static int k_beakSolo1 = 0;
