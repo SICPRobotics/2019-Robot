@@ -14,8 +14,8 @@ import frc.robot.subsystems.Elevator;
 public class Robot extends TimedRobot 
 {
   public static DriveTrain driveTrain = new DriveTrain();
-  public static Elevator elevator = new Elevator();
-  public static Beak beak = new Beak();
+  //public static Elevator elevator = new Elevator();
+  //public static Beak beak = new Beak();
   public static OI oi;
 
   Command autoCommand;
@@ -27,7 +27,7 @@ public class Robot extends TimedRobot
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
-    driveTrain.resetGyro();
+   // driveTrain.resetGyro();
     
     oi = new OI();
 
@@ -37,6 +37,8 @@ public class Robot extends TimedRobot
     chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
+
+    
   }
 
   @Override
@@ -48,6 +50,7 @@ public class Robot extends TimedRobot
   @Override
   public void disabledInit() 
   {
+    driveTrain.disable();
     //set everything to 0/turn stuff off/cancel all commands
   }
 
@@ -77,14 +80,16 @@ public class Robot extends TimedRobot
     if (autoCommand != null) {
       autoCommand.cancel();
     }
+    //driveTrain.enable();
   }
 
   @Override
   public void teleopPeriodic() 
   {
-    Scheduler.getInstance().run();
-    driveTrain.cheesyDrive(j1);
+   // Scheduler.getInstance().run();
+    //driveTrain.cheesyDrive(j1);
     //driveTrain.calibrateTalons(j1);
+    driveTrain.drive();
   }
 
   @Override

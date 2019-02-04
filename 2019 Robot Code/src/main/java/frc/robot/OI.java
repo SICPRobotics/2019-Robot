@@ -3,8 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.MoveElevator;
-import frc.robot.commands.ToggleBeak;
 
 public class OI 
 {
@@ -23,10 +21,6 @@ public class OI
  
   public OI()
   {
-    buttonA.whenPressed(new MoveElevator(RobotMap.k_cargoShip));
-    buttonB.whenPressed(new MoveElevator(RobotMap.k_midHatch));
-    buttonX.whenPressed(new ToggleBeak());
-    buttonY.whenPressed(new MoveElevator(RobotMap.k_topHatch));
   }
 
   // Start the command when the button is pressed and let it run the command
