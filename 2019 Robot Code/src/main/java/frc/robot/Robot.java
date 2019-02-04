@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -23,7 +24,7 @@ public class Robot extends TimedRobot
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   Joystick j1, j2;
-  //Button j1
+  Button joystickButton7;
 
   @Override
   public void robotInit() 
@@ -36,6 +37,8 @@ public class Robot extends TimedRobot
     j1 = new Joystick(RobotMap.k_joystick1);
     j2 = new Joystick(RobotMap.k_joystick2);
    
+    joystickButton7 = new JoystickButton(j1, 7);
+
     chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);
