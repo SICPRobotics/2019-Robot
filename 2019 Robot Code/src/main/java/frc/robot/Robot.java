@@ -15,9 +15,9 @@ import frc.robot.subsystems.Elevator;
 
 public class Robot extends TimedRobot 
 {
-  public static DriveTrain driveTrain = new DriveTrain();
-  public static Elevator elevator = new Elevator();
-  public static Beak beak = new Beak();
+  public static DriveTrain driveTrain;
+  public static Elevator elevator;
+  public static Beak beak;
   public static OI oi;
 
   Command autoCommand;
@@ -25,19 +25,22 @@ public class Robot extends TimedRobot
 
   Joystick j1, j2;
   Button joystickButton7;
-
+  boolean arcadeDriveStyle;
   @Override
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
     driveTrain.resetGyro();
-    
+
+    elevator = new Elevator();
+    beak = new Beak();
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);
     j2 = new Joystick(RobotMap.k_joystick2);
    
     joystickButton7 = new JoystickButton(j1, 7);
+    arcadeDriveStyle = true;
 
     chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
     // chooser.addOption("My Auto", new MyAutoCommand());
@@ -76,7 +79,8 @@ public class Robot extends TimedRobot
   @Override
   public void teleopInit() 
   {
-    if (autoCommand != null) {
+    if (autoCommand != null) 
+    {
       autoCommand.cancel();
     }
   }
@@ -85,7 +89,13 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();
-    driveTrain.cheesyDrive(j1);
+
+    if (joystickButton7.get()) 
+      arcadeDriveStyle = !arcadeDriveStyle;
+    if (arcadeDriveStyle)
+      driveTrain.cheesyDrive(j1);
+    else if (!arcadeDriveStyle)
+      driveTrain.tankDrive(j1, j2);
   }
 
   @Override
