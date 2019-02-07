@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.SetDrivePID;
 import frc.robot.subsystems.Beak;
+import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 
@@ -18,6 +19,7 @@ public class Robot extends TimedRobot
   public static DriveTrain driveTrain;
   public static Elevator elevator;
   public static Beak beak;
+  public static Claws claws;
   public static OI oi;
 
   Command autoCommand;
@@ -31,9 +33,9 @@ public class Robot extends TimedRobot
   {
     driveTrain = new DriveTrain();
     driveTrain.resetGyro();
-
     elevator = new Elevator();
     beak = new Beak();
+    claws = new Claws();
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);
