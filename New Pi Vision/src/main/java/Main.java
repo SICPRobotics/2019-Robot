@@ -8,6 +8,8 @@
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpServer;
 
 import edu.wpi.cscore.AxisCamera;
 import edu.wpi.cscore.CvSink;
@@ -102,6 +106,9 @@ public final class Main {
   public static int team;
   public static boolean server;
   public static List<CameraConfig> cameraConfigs = new ArrayList<>();
+
+  private static MjpegStream stream = new MjpegStream();
+  public static Mat rgb;
 
   private Main() {
   }
@@ -281,7 +288,38 @@ public final class Main {
 
     System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		System.out.println("E X E C U T E D !!!!");
+		int port = 25565;
+		HttpServer server;
+    server = HttpServer.create(new InetSocketAddress(port), 0);
+
+    FunctionalInterface sendImage = (Mat mat) -> {
+
+    };
     
+    server.createContext("/", (rootHandler) -> {
+      byte[] response = "<!DOCTYPE html><html><body><img src=\"./mjpeg\"></body></html>".getBytes();
+      rootHandler.sendResponseHeaders(200, response.length);
+      final OutputStream os = rootHandler.getResponseBody();
+      os.write(response);
+      os.flush();
+      rootHandler.close();
+      server.setExecutor(null);
+      server.start();
+    });
+    server.createContext("/mjpeg", (mjpegHandler) -> {
+      Headers h = mjpegHandler.getResponseHeaders();
+      h.set("Content-Type", "multipart/x-mixed-replace; boundary=123456789000000000000987654321");
+      mjpegHandler.sendResponseHeaders(200, 0);
+      OutputStream os = mjpegHandler.getResponseBody();
+    });
+
+    System.out.println("Server is running on port: "+port);
+    
+
+
+
 
     VideoSource axisCamera = new AxisCamera("wolfbyte axis camera","10.58.22.11");
     
@@ -300,10 +338,30 @@ public final class Main {
               new MyPipeline(), pipeline -> {
         // do something with pipeline results
       });*/
+      /*if (!axisCamera.isConnected()){
+        System.out.println("Not connected to Axis Camera");
+      }*/
 
+      /*for(;;){
+        if (axisCamera.isConnected()){
+          continue;
+        }
+        System.out.println("Axis Cam Not Connected, Waiting");
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+          continue;
+        }
+      }*/
       
 
       NetworkTableEntry entry = setUpNetworkTables();
+
+      try {
+        stream.startStream();
+      } catch(IOException e) {
+        System.out.println(e);
+      }
       //something like this for GRIP:
       VisionThread visionThread = new VisionThread(axisCamera, new GripPipeline(), pipeline -> {
         /*for(int i =0; i < pipeline.findContoursOutput().size(); i++){
@@ -321,6 +379,7 @@ public final class Main {
         List<MatOfPoint> contours = pipeline.filterContoursOutput();
         List<Tape> tapes = new ArrayList<Tape>();
         if (contours.size() >= 2) {
+          //System.out.println("Pipeline ran");
           /*RotatedRect rect0 = Imgproc.minAreaRect(new MatOfPoint2f(contours.get(0).toArray()));
           RotatedRect rect1 = Imgproc.minAreaRect(new MatOfPoint2f(contours.get(1).toArray()));
           RotatedRect left;
@@ -337,10 +396,12 @@ public final class Main {
           System.out.println("Center: " + center);
           entry.setDouble(center);*/
 
-          Mat rgb = new Mat();
+          rgb = new Mat();
           CvSink sink = new CvSink("opencv_wolfbyte axis camera");
           sink.setSource(axisCamera);
           sink.grabFrame(rgb);
+
+          Imgcodecs.imwrite("/home/pi/WhatTheCameraSees.jpg", rgb);
 
           for (MatOfPoint contour : contours) {
             Tape tape = new Tape(contour);
@@ -348,7 +409,21 @@ public final class Main {
             rgb = tape.drawOn(rgb);
           }
 
-          Imgcodecs.imwrite("/home/pi/RawImage.jpg", rgb);
+          stream.setMat(rgb);
+
+          Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
+
+          int length = (int) (rgb.total() * rgb.elemSize());
+					byte img[] = new byte[length];
+					rgb.get(0, 0, img);
+					
+					Imgcodecs.imwrite("/home/pi/StreamerMat.jpg", rgb);
+					
+					rgb.get(0, 0, img);
+					os.write(("--123456789000000000000987654321\r\n" + "Content-Type:image/jpeg\r\n" + "Content-Length:" + img.length + "\r\n\r\n").getBytes());
+					os.write(img);
+					os.write(("\r\n\r\n").getBytes());
+					os.flush();
         }
       });
       
@@ -360,6 +435,13 @@ public final class Main {
 
     for (;;) {
       System.out.println("Ran");
+      if (!axisCamera.isConnected()){
+        System.out.println("Not connected to Axis Camera");
+      }
+      else if(axisCamera.isConnected())
+      {
+        System.out.println("Connected to Axis Camera");
+      }
       //updateNetworkTables(entry, inc);
       inc++;
     

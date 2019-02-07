@@ -73,7 +73,7 @@ public class DriveTrain extends PIDSubsystem
   protected void usePIDOutput(double output) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
-    robotBase.tankDrive(0.5, 0.5);
+    robotBase.tankDrive(0.5 + output, 0.5 - output);
     if (count++%100 ==0)
       System.out.println("PID Output: " + output);
   }
