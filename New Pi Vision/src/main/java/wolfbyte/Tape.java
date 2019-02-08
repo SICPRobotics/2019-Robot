@@ -11,9 +11,11 @@ import org.opencv.imgproc.Imgproc;
 public class Tape {
     RotatedRect rect;
     String side;
+    MatOfPoint contour;
     public Tape(MatOfPoint contour){
+        this.contour = contour;
         rect = Imgproc.minAreaRect(new MatOfPoint2f(contour.toArray()));
-        if (rect.angle > 0 && rect.angle < 180) {
+        if (rect.angle < -36) {
             side = "left";
         } else {
             side = "right";
@@ -25,8 +27,15 @@ public class Tape {
         for (int j = 0; j < 4; j++){  
             Imgproc.line(mat, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0));
         }
-        Imgproc.putText(mat, Double.toString(rect.angle), rect.center, 0, 1.0, new Scalar(255.0,255.0,255.0));
+        Imgproc.putText(mat, side + " at " + Double.toString(rect.angle).substring(0, 3), rect.center, 0, 0.5, new Scalar(255.0,255.0,255.0));
+
+        //Draw predicted partner position
+        Imgproc.circle(mat, predictCounterpart(), 5, new Scalar(0.0,0.0,255.0));
+
         return mat;
+    }
+    public Point predictCounterpart() {
+        return new Point(rect.center.x + ((side == "left" ? rect.size.height : rect.size.width) * 5 * (side == "left" ? 1 : -1)), rect.center.y);
     }
 }
 
