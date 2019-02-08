@@ -262,24 +262,26 @@ public final class Main {
            
             List<MatOfPoint> contours = pipeline.filterContoursOutput();
             List<Tape> tapes = new ArrayList<Tape>();
+
+            rgb = new Mat();
+            CvSink sink = new CvSink("opencv_wolfbyte axis camera");
+            sink.setSource(axisCamera);
+            sink.grabFrame(rgb);
+            sink.close();
+
+            Imgcodecs.imwrite("/home/pi/WhatTheCameraSees.jpg", rgb);
+
             if (contours.size() >= 2) {
-                rgb = new Mat();
-                CvSink sink = new CvSink("opencv_wolfbyte axis camera");
-                sink.setSource(axisCamera);
-                sink.grabFrame(rgb);
-
-                Imgcodecs.imwrite("/home/pi/WhatTheCameraSees.jpg", rgb);
-
                 for (MatOfPoint contour : contours) {
                     Tape tape = new Tape(contour);
                     tapes.add(tape);
                     rgb = tape.drawOn(rgb);
                 }
-
-                stream.sendMat(rgb);
-
-                Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
             }
+
+            stream.sendMat(rgb);
+
+            Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
         });
 
         visionThread.start();

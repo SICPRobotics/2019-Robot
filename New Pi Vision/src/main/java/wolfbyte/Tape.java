@@ -25,7 +25,7 @@ public class Tape {
         for (int j = 0; j < 4; j++){  
             Imgproc.line(mat, vertices[j], vertices[(j+1)%4], new Scalar(0,255,0));
         }
-        Imgproc.putText(mat, side, rect.center, 0, 1.0, new Scalar(255.0,255.0,255.0));
+        Imgproc.putText(mat, Double.toString(rect.angle), rect.center, 0, 1.0, new Scalar(255.0,255.0,255.0));
         return mat;
     }
 }
