@@ -50,6 +50,7 @@ import org.opencv.videoio.VideoCapture;
 import wolfbyte.MjpegStream;
 import wolfbyte.game_elements.Tape;
 import wolfbyte.game_elements.Hatch;
+import wolfbyte.ElementManager;
 import wolfbyte.GripPipeline;
 
 public final class Main {
@@ -69,6 +70,7 @@ public final class Main {
 
     private static MjpegStream stream = new MjpegStream();
     public static Mat rgb;
+    private static ElementManager elementManager;
 
     private Main() {
     }
@@ -259,12 +261,14 @@ public final class Main {
             System.out.println(e);
         }
 
+        elementManager = new ElementManager();
 
         // something like this for GRIP:
         VisionThread visionThread = new VisionThread(axisCamera, new GripPipeline(), pipeline -> {
            
             List<MatOfPoint> contours = pipeline.filterContoursOutput();
-            List<Tape> tapes = new ArrayList<Tape>();
+            ArrayList<Tape> tapes = new ArrayList<Tape>();
+            ArrayList<Hatch> hatches = new ArrayList<Hatch>();
 
             rgb = new Mat();
             CvSink sink = new CvSink("opencv_wolfbyte axis camera");
@@ -280,11 +284,17 @@ public final class Main {
                     tapes.add(tape);
                     rgb = tape.drawOn(rgb);
                 }
+                
+                //hatches = ElementManager.matchTapes(tapes);
+                elementManager.updateTapes(tapes);
+                for (Hatch hatch : elementManager.getHatches()){
+                    hatch.drawOn(rgb);
+                }
             }
 
-            stream.sendMat(rgb);
-
             Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
+
+            stream.sendMat(rgb);
         });
 
         visionThread.start();
