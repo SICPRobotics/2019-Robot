@@ -1,14 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.SetDrivePID;
 import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
@@ -22,12 +20,14 @@ public class Robot extends TimedRobot
   public static Claws claws;
   public static OI oi;
 
+  public static Joystick j1;
+  Compressor c;
+
   Command autoCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  Joystick j1, j2;
-  Button joystickButton7;
-  boolean arcadeDriveStyle;
+  boolean vision;
+
   @Override
   public void robotInit() 
   {
@@ -39,24 +39,22 @@ public class Robot extends TimedRobot
     oi = new OI();
 
     j1 = new Joystick(RobotMap.k_joystick1);
-    j2 = new Joystick(RobotMap.k_joystick2);
-   
-    joystickButton7 = new JoystickButton(j1, 7);
-    arcadeDriveStyle = true;
 
-    chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", chooser);
+    c = new Compressor(0);
+    c.setClosedLoopControl(true);
+   
+    /*chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
+    chooser.addOption("My Auto", new MyAutoCommand());
+    SmartDashboard.putData("Auto mode", chooser);*/
+
+    vision = false;
   }
 
   @Override
   public void robotPeriodic() {}
 
   @Override
-  public void disabledInit() 
-  {
-    //set everything to 0/turn stuff off/cancel all commands
-  }
+  public void disabledInit() {}
 
   @Override
   public void disabledPeriodic() {}
@@ -64,18 +62,26 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
-    autoCommand = chooser.getSelected();
+    /*autoCommand = chooser.getSelected();
 
     if (autoCommand != null) 
     {
       autoCommand.start();
-    }
+    }*/
   }
 
   @Override
   public void autonomousPeriodic() 
   {
     Scheduler.getInstance().run();
+    if(!vision)
+    {
+      driveTrain.cheesyDrive(j1);
+    }
+    else if(vision)
+    {
+
+    }
   }
 
   @Override
@@ -90,14 +96,15 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic() 
   {
-    Scheduler.getInstance().run();
-
-    if (joystickButton7.get()) 
-      arcadeDriveStyle = !arcadeDriveStyle;
-    if (arcadeDriveStyle)
+    Scheduler.getInstance().run();    
+    if(!vision)
+    {
       driveTrain.cheesyDrive(j1);
-    else if (!arcadeDriveStyle)
-      driveTrain.tankDrive(j1, j2);
+    }
+    else if(vision)
+    {
+
+    }
   }
 
   @Override

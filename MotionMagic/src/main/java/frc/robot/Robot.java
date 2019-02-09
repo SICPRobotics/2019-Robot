@@ -4,13 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class Robot extends TimedRobot 
 {
@@ -39,23 +37,16 @@ public class Robot extends TimedRobot
 
   @Override
   public void robotPeriodic() {}
-
   @Override
   public void disabledInit() {}
-
   @Override
   public void disabledPeriodic() {}
-
   @Override
   public void autonomousInit() {}
-
   @Override
   public void autonomousPeriodic() {}
-
   @Override
-  public void teleopInit() 
-  {
-  }
+  public void teleopInit() {}
 
   @Override
   public void teleopPeriodic() 
@@ -68,7 +59,5 @@ public class Robot extends TimedRobot
   }
 
   @Override
-  public void testPeriodic() 
-  {
-  }
+  public void testPeriodic() {}
 }
