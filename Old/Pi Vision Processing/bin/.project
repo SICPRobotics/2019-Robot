@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Pi Vision Processing</name>
-	<comment>Project Pi Vision Processing created by Buildship.</comment>
+	<name>java-multiCameraServer</name>
+	<comment>Project java-multiCameraServer created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
