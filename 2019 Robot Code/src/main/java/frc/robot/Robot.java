@@ -33,21 +33,22 @@ public class Robot extends TimedRobot
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
-    /*driveTrain.resetGyro();
-    elevator = new Elevator();
-    beak = new Beak();
-    claws = new Claws();
-    oi = new OI();
-    c = new Compressor(0);
-    c.setClosedLoopControl(true);
-    INSERT CAMERA CODE HERE*/
+    //driveTrain.resetGyro();
+    //elevator = new Elevator();
+    //beak = new Beak();
+    //claws = new Claws();
+    //oi = new OI();
+    //c = new Compressor(0);
+    //c.setClosedLoopControl(true);
+    //INSERT CAMERA CODE HERE
     j1 = new Joystick(RobotMap.k_joystick1);
+    
     chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
     chooser.addOption("Do Nothing", new DoNothing());
     SmartDashboard.putData("Auto mode", chooser);
 
-    /*vision = false;
-    SmartDashboard.putBoolean("Running Vision", vision);*/
+    vision = false;
+    SmartDashboard.putBoolean("Running Vision", vision);
   }
 
   @Override
