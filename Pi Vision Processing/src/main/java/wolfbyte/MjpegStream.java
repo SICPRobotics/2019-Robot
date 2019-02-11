@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+import com.google.gson.JsonObject;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
 
@@ -19,9 +20,13 @@ public class MjpegStream {
     private File file;
 
     private ArrayList<OutputStream> openOutputStreams;
+    private ArrayList<OutputStream> openDataStreams;
+    private int num;
 
 	public void startStream() throws IOException {
         openOutputStreams = new ArrayList<>();
+        openDataStreams = new ArrayList<>();
+        num = 0;
         file = new File("/home/pi/TapesFound.jpg");
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		System.out.println("E X E C U T E D !!!!");
@@ -57,6 +62,18 @@ public class MjpegStream {
 					os.flush();
                     os.close();*/
         });
+
+        server.createContext("/data", (handler) -> {
+            Headers h = handler.getResponseHeaders();
+			h.set("Content-Type", "text/plain; boundary=123456789000000000000987654321");
+			byte[] response = "Test test".getBytes();
+			handler.sendResponseHeaders(200, response.length);
+			final OutputStream os = handler.getResponseBody();
+			os.write(response);
+			os.flush();
+			openDataStreams.add(os);
+        });
+
 		server.setExecutor(null);
 		server.start();
         System.out.println("Server is running on port: "+port);
@@ -75,11 +92,12 @@ public class MjpegStream {
             img = new byte[0];
         }
 
-        
+
         //Convert! MAKE SURE THIS ACTUALLY WORKS -- not working
         /*int length = (int) (mat.total() * mat.elemSize());
 		byte[] img = new byte[length];
         mat.get(0, 0, img);*/
+
         
         //Go through all the output streams and send the new image.
         for(OutputStream os : openOutputStreams) {
@@ -99,6 +117,27 @@ public class MjpegStream {
             }
             
         }
+
+        //Update the data
+        byte[] data = Integer.toString(num).getBytes();
+
+        for(OutputStream os : openDataStreams){
+            try {
+                os.write(("--123456789000000000000987654321\r\n" + "Content-Type:text/plain\r\n" + "Content-Length:" + data.length + "\r\n\r\n").getBytes());
+                os.write(data);
+                os.write(("\r\n\r\n").getBytes());
+                os.flush();
+            } catch (IOException e) {
+                System.out.println(e.getLocalizedMessage());
+                try {
+                    os.close();
+                } catch (IOException ee) {
+                    System.out.println(ee.getLocalizedMessage());
+                    System.out.println("IOExeption and output stream could not be closed");
+                }
+            }
+        }
+        num++;
     }
 
 }

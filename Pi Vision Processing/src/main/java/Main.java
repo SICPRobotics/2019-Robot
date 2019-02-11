@@ -54,7 +54,8 @@ import wolfbyte.ElementManager;
 import wolfbyte.GripPipeline;
 
 public final class Main {
-    private static String configFile = "/boot/frc.json";
+    //private static String configFile = "/boot/frc.json";
+    private static String configFile = "C:\\Users\\Samuel\\Desktop\\test folder\\frc.json";
 
     @SuppressWarnings("MemberName")
     public static class CameraConfig {
@@ -237,9 +238,9 @@ public final class Main {
         }
 
         // read configuration
-        if (!readConfig()) {
+        /*if (!readConfig()) {
             return;
-        }
+        }*/
 
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
@@ -301,7 +302,7 @@ public final class Main {
         
 
 
-        
+
 
         // loop forever
         int inc = 0;
