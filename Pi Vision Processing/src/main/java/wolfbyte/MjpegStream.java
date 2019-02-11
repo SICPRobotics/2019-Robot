@@ -65,12 +65,12 @@ public class MjpegStream {
 
         server.createContext("/data", (handler) -> {
             Headers h = handler.getResponseHeaders();
-			h.set("Content-Type", "text/plain; boundary=123456789000000000000987654321");
-			byte[] response = "Test test".getBytes();
-			handler.sendResponseHeaders(200, response.length);
+			h.set("Content-Type", "multipart/x-mixed-replace; boundary=123456789000000000000987654321");
+			//byte[] response = "Test test".getBytes();
+			handler.sendResponseHeaders(200, 0);
 			final OutputStream os = handler.getResponseBody();
-			os.write(response);
-			os.flush();
+			//os.write(response);
+			//os.flush();
 			openDataStreams.add(os);
         });
 
@@ -107,28 +107,32 @@ public class MjpegStream {
                 os.write(("\r\n\r\n").getBytes());
                 os.flush();
             } catch (IOException e) {
-                System.out.println(e.getLocalizedMessage());
+                //System.out.println(e.getLocalizedMessage());
                 try {
                     os.close();
                 } catch (IOException ee) {
-                    System.out.println(ee.getLocalizedMessage());
-                    System.out.println("IOExeption and output stream could not be closed");
+                    //System.out.println(ee.getLocalizedMessage());
+                    //System.out.println("IOExeption and output stream could not be closed");
                 }
             }
             
         }
 
         //Update the data
-        byte[] data = Integer.toString(num).getBytes();
+        //byte[] data = Integer.toString(num % 10).getBytes();
+        //byte[] data = Integer.toString(1).getBytes();
+        byte[] data = ("{ \"diff\": " + num + " }").getBytes();
 
         for(OutputStream os : openDataStreams){
             try {
-                os.write(("--123456789000000000000987654321\r\n" + "Content-Type:text/plain\r\n" + "Content-Length:" + data.length + "\r\n\r\n").getBytes());
+                //os.write(("--123456789000000000000987654321\r\n" + "Content-Type:application/json\r\n" + "Content-Length:" + data.length + "\r\n\r\n").getBytes());
+                //os.write(("--123456789000000000000987654321\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: 1\r\n\r\n").getBytes());
                 os.write(data);
-                os.write(("\r\n\r\n").getBytes());
+               // os.write(("\r\n\r\n").getBytes());
                 os.flush();
             } catch (IOException e) {
                 System.out.println(e.getLocalizedMessage());
+                e.printStackTrace();
                 try {
                     os.close();
                 } catch (IOException ee) {

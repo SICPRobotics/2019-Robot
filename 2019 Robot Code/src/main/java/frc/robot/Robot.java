@@ -39,6 +39,14 @@ public class Robot extends TimedRobot
     SmartDashboard.putData("Auto mode", chooser);
 
     driveTrain.enable();
+
+    try {
+      UrlReader urlReader = new UrlReader();
+    } catch (Exception e) {
+      System.out.println("Reading the URL failed");
+      e.printStackTrace();
+    }
+    
   }
 
   @Override
