@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -10,14 +9,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.RobotMap;
 
 public class DriveTrain extends PIDSubsystem 
 {
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
-
   ADXRS450_Gyro gyro; 
 
   public DriveTrain()
@@ -29,7 +26,6 @@ public class DriveTrain extends PIDSubsystem
     frontR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     frontR.setSensorPhase(true);
     frontR.selectProfileSlot(0, 0);
-
     frontR.config_kF(0,.3); //example: 
     frontR.config_kP(0,0.2);//.0682) example: .2
     frontR.config_kI(0,.00);
@@ -39,11 +35,14 @@ public class DriveTrain extends PIDSubsystem
     frontR.setSelectedSensorPosition(0);
 
     rearR = new WPI_TalonSRX(1);
+    rearR.follow(frontR);
     
     frontL = new WPI_TalonSRX(3);
-    rearL = new WPI_TalonSRX(2);
-    rearL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontL.setSensorPhase(false);
 
+    rearL = new WPI_TalonSRX(2);
+    rearL.follow(frontL);
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
@@ -77,8 +76,8 @@ public class DriveTrain extends PIDSubsystem
   public void magicDrive(double distance)
   {
     frontR.set(ControlMode.MotionMagic,distance);
-    rearR.set(ControlMode.Follower,0);
-    rearL.set(ControlMode.Follower,0);
+    //rearR.set(ControlMode.Follower,0);
+    //rearL.set(ControlMode.Follower,0);
     frontL.set(ControlMode.Follower,0);  
   }
 

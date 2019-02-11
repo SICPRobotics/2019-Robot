@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveOffPlatform;
+import frc.robot.commands.*;
 import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
@@ -42,14 +42,12 @@ public class Robot extends TimedRobot
     c.setClosedLoopControl(true);
     INSERT CAMERA CODE HERE*/
     j1 = new Joystick(RobotMap.k_joystick1);
-    /*chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
-    chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", chooser);*/
+    chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
+    chooser.addOption("Do Nothing", new DoNothing());
+    SmartDashboard.putData("Auto mode", chooser);
 
-    autoCommand = new DriveOffPlatform();
-
-    vision = false;
-    SmartDashboard.putBoolean("Running Vision", vision);
+    /*vision = false;
+    SmartDashboard.putBoolean("Running Vision", vision);*/
   }
 
   @Override
@@ -67,7 +65,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
-    //autoCommand = chooser.getSelected();
+    autoCommand = chooser.getSelected();
 
     if (autoCommand != null) 
     {
@@ -79,7 +77,8 @@ public class Robot extends TimedRobot
   public void autonomousPeriodic() 
   {
     Scheduler.getInstance().run();
-
+    if (!autoCommand.isRunning())
+      driveTrain.cheesyDrive(j1);
     /*if(!vision)
     {
       driveTrain.cheesyDrive(j1);
