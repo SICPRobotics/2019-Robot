@@ -13,6 +13,7 @@ public class DisableVisionPID extends Command
   @Override
   protected void initialize() 
   {
+    System.out.println("DisableVisionPID init");
     Robot.driveTrain.disable();
   }
 

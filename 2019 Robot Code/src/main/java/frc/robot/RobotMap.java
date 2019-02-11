@@ -2,11 +2,7 @@ package frc.robot;
 
 public class RobotMap 
 {
-  //drivetrain motors
-  public static int k_rearL = 2;
-  public static int k_frontL = 3;
-  public static int k_rearR = 1;
-  public static int k_frontR = 0;
+  
 
   //other motors
   public static int k_arm1 = 4;

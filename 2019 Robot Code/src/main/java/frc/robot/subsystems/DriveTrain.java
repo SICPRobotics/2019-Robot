@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -23,28 +25,35 @@ public class DriveTrain extends PIDSubsystem
     super("DriveTrain", 1, 2, 3);
     setSetpoint(0);
 
-    frontL = new WPI_TalonSRX(RobotMap.k_frontL);
-    rearL = new WPI_TalonSRX(RobotMap.k_rearL);
-    rearL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontR = new WPI_TalonSRX(0);
+    frontR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontR.setSensorPhase(true);
+    frontR.selectProfileSlot(0, 0);
 
-    frontR = new WPI_TalonSRX(RobotMap.k_frontR);
-    rearR = new WPI_TalonSRX(RobotMap.k_rearR);
-    rearR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontR.config_kF(0,.3); //example: 
+    frontR.config_kP(0,0.2);//.0682) example: .2
+    frontR.config_kI(0,.00);
+    frontR.config_kD(0,0);
+    frontR.configMotionCruiseVelocity(3000,100); //example: 15000
+    frontR.configMotionAcceleration(2500,100); //example: 6000
+    frontR.setSelectedSensorPosition(0);
+
+    rearR = new WPI_TalonSRX(1);
+    
+    frontL = new WPI_TalonSRX(3);
+    rearL = new WPI_TalonSRX(2);
+    rearL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
 
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
-    robotBase = new DifferentialDrive(left, right);
+   // robotBase = new DifferentialDrive(left, right);
 
-    gyro = new ADXRS450_Gyro();
+    //gyro = new ADXRS450_Gyro();
   }
   
   @Override
-  public void initDefaultCommand() 
-  {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+  public void initDefaultCommand() {}
   
   @Override
   protected double returnPIDInput() 
@@ -57,6 +66,25 @@ public class DriveTrain extends PIDSubsystem
   {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
+  }
+  
+  public void invertLeft(boolean invert)
+  {
+    rearL.setInverted(invert);
+    frontL.setInverted(invert);
+  }
+
+  public void magicDrive(double distance)
+  {
+    frontR.set(ControlMode.MotionMagic,distance);
+    rearR.set(ControlMode.Follower,0);
+    rearL.set(ControlMode.Follower,0);
+    frontL.set(ControlMode.Follower,0);  
+  }
+
+  public double encSpeed()
+  {
+    return frontR.getSelectedSensorVelocity();
   }
 
   public void cheesyDrive(Joystick j) //test

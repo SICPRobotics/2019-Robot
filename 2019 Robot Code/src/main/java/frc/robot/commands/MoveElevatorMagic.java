@@ -3,33 +3,32 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MoveElevator extends Command 
+public class MoveElevatorMagic extends Command 
 {
   double targetPos;
 
-  public MoveElevator(double set) 
+  public MoveElevatorMagic(double set) 
   {
     requires(Robot.elevator);
     targetPos = set;
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() 
   {
+    System.out.println("MoveElevatorMagic init");
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() 
   {
-
+    //Robot.elevator.magicMotion(targetPos);
   }
 
   @Override
   protected boolean isFinished() 
   {
-    return false;
+    return true;
   }
 
   @Override
@@ -37,8 +36,6 @@ public class MoveElevator extends Command
   {
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }

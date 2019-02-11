@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DriveOffPlatform;
 import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
@@ -32,29 +33,33 @@ public class Robot extends TimedRobot
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
-    driveTrain.resetGyro();
+    /*driveTrain.resetGyro();
     elevator = new Elevator();
     beak = new Beak();
     claws = new Claws();
     oi = new OI();
-
-    j1 = new Joystick(RobotMap.k_joystick1);
-
     c = new Compressor(0);
     c.setClosedLoopControl(true);
-   
+    INSERT CAMERA CODE HERE*/
+    j1 = new Joystick(RobotMap.k_joystick1);
     /*chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
     chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", chooser);*/
 
+    autoCommand = new DriveOffPlatform();
+
     vision = false;
+    SmartDashboard.putBoolean("Running Vision", vision);
   }
 
   @Override
   public void robotPeriodic() {}
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() 
+  {
+    driveTrain.disable();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -62,26 +67,24 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
-    /*autoCommand = chooser.getSelected();
+    //autoCommand = chooser.getSelected();
 
     if (autoCommand != null) 
     {
       autoCommand.start();
-    }*/
+    }
   }
 
   @Override
   public void autonomousPeriodic() 
   {
     Scheduler.getInstance().run();
-    if(!vision)
+
+    /*if(!vision)
     {
       driveTrain.cheesyDrive(j1);
     }
-    else if(vision)
-    {
-
-    }
+    else if(vision) {}*/
   }
 
   @Override
@@ -101,10 +104,7 @@ public class Robot extends TimedRobot
     {
       driveTrain.cheesyDrive(j1);
     }
-    else if(vision)
-    {
-
-    }
+    else if(vision) {}
   }
 
   @Override

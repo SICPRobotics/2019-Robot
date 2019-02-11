@@ -16,19 +16,19 @@ public class ToggleClaws extends Command
   @Override
   protected void initialize() 
   {
-
+    System.out.println("ToggleClaws init");
   }
 
   @Override
   protected void execute() 
   {
-    Robot.claws.moveClaws(speed);
+    //Robot.claws.moveClaws(speed);
   }
 
   @Override
   protected boolean isFinished() 
   {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true

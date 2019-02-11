@@ -13,15 +13,18 @@ public class ToggleBeak extends Command
   }
 
   @Override
-  protected void initialize() {}
+  protected void initialize() 
+  {
+    System.out.println("ToggleBeak init");
+  }
 
   @Override
   protected void execute() 
   {
-    if (direction)
+    /*if (direction)
       Robot.beak.shutBeak();
     else if (!direction)
-      Robot.beak.openBeak();
+      Robot.beak.openBeak();*/
   }
 
   @Override
@@ -30,7 +33,6 @@ public class ToggleBeak extends Command
     return true;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() 
   {

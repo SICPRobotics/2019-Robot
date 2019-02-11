@@ -13,9 +13,9 @@ public class OI
   Button buttonB = new JoystickButton(xbox, 2); 
   Button buttonX = new JoystickButton(xbox, 3); 
   Button buttonY = new JoystickButton(xbox, 4); 
-  Button buttonLB = new JoystickButton(xbox, 5); //open
-  Button buttonRB = new JoystickButton(xbox, 6); //open
-  Button buttonBack = new JoystickButton(xbox, 7); //open
+  Button buttonLB = new JoystickButton(xbox, 5); 
+  Button buttonRB = new JoystickButton(xbox, 6); 
+  Button buttonBack = new JoystickButton(xbox, 7); 
   Button buttonStart = new JoystickButton(xbox, 8); //open
   Button leftThumb = new JoystickButton(xbox, 9); //open
   Button rightThumb = new JoystickButton(xbox, 10); //open
@@ -24,10 +24,13 @@ public class OI
 
   public OI()
   {
-    buttonA.whenPressed(new MoveElevator(RobotMap.k_cargoShip));
-    buttonB.whenPressed(new MoveElevator(RobotMap.k_midHatch));
+    buttonA.whenPressed(new MoveElevatorMagic(RobotMap.k_cargoShip));
+    buttonB.whenPressed(new MoveElevatorMagic(RobotMap.k_midHatch));
     buttonX.whenPressed(new ToggleBeak());
-    buttonY.whenPressed(new MoveElevator(RobotMap.k_topHatch));
+    buttonY.whenPressed(new MoveElevatorMagic(RobotMap.k_topHatch));
+    buttonLB.whenPressed(new ToggleClaws(0));
+    buttonRB.whileHeld(new DriveElevator());
+    buttonBack.whenPressed(new MoveParallelogram());
 
     j1.whenPressed(new StartVisionPID());
     j1.whenReleased(new DisableVisionPID());

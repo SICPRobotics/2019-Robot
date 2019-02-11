@@ -3,31 +3,35 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class StartVisionPID extends Command 
+public class DriveElevator extends Command 
 {
-  public StartVisionPID() 
+  public DriveElevator() 
   {
-    requires(Robot.driveTrain);
+    requires(Robot.elevator);
   }
 
   @Override
   protected void initialize() 
   {
-    System.out.println("StartVisionPID init");
-    //Robot.driveTrain.enable();
+    System.out.println("DriveElevator init");
   }
 
   @Override
-  protected void execute() {}
+  protected void execute() 
+  {
+    //Robot.elevator.slowDrive();
+  }
 
   @Override
   protected boolean isFinished() 
   {
-    return true;
+    return false;
   }
 
   @Override
-  protected void end() {}
+  protected void end() 
+  {
+  }
 
   @Override
   protected void interrupted() {}

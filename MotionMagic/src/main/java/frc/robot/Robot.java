@@ -1,44 +1,51 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
+
 
 public class Robot extends TimedRobot 
 {
-  WPI_TalonSRX talon, talon1;
-  Joystick joystick;
-  StringBuilder sb = new StringBuilder();
-  SpeedControllerGroup left;
+  WPI_TalonSRX frontR,rearR,frontL,rearL;
+  
   @Override
   public void robotInit() 
   {
-    talon = new WPI_TalonSRX(0);
-    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
-    talon.setSensorPhase(true);
-    talon.config_kF(0,.3125);
-    talon.config_kP(0,0);
-    talon.config_kI(0,0);
-    talon.config_kD(0,0);
-    talon.configMotionCruiseVelocity(1625,1000);
-    talon.configMotionAcceleration(1625,1000);
-    
-    talon1 = new WPI_TalonSRX(1);
-    
-    left = new SpeedControllerGroup(talon, talon1);
-    joystick = new Joystick(0);
+    frontR = new WPI_TalonSRX(0);
+    //frontR.configFactoryDefault();
+
+    frontR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontR.setSensorPhase(true);
+    frontR.selectProfileSlot(0, 0);
+
+    frontR.config_kF(0,.3); //example: 
+    frontR.config_kP(0,0.2);//.0682) example: .2
+    frontR.config_kI(0,.00);
+    frontR.config_kD(0,0);
+    frontR.configMotionCruiseVelocity(2500,100); //example: 15000
+    frontR.configMotionAcceleration(2500,100); //example: 6000
+    frontR.setSelectedSensorPosition(0);
+
+    rearR = new WPI_TalonSRX(1);
+   // rearR.follow(frontR);
+    rearL = new WPI_TalonSRX(2);
+    rearL.setInverted(true);
+   // rearL.follow(frontR);
+    frontL = new WPI_TalonSRX(3);
+    frontL.setInverted(true);
+ //   frontL.follow(frontR);
   }
 
   @Override
   public void robotPeriodic() {}
   @Override
-  public void disabledInit() {}
+  public void disabledInit() 
+  {
+    frontR.setSelectedSensorPosition(0);
+  }
   @Override
   public void disabledPeriodic() {}
   @Override
@@ -51,12 +58,23 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic() 
   {
+    //left.set(.3);
+    //right.set(.3);
     //left.set(joystick.getRawAxis(1)); 
-    //System.out.println("out: "+talon.getMotorOutputVoltage()/talon.getBusVoltage()+" speed: "+talon.getSelectedSensorVelocity()+"position: "+talon.getSelectedSensorPosition());   
-    talon.set(ControlMode.MotionMagic,10000,DemandType.AuxPID,0);
-    talon1.follow(talon, FollowerType.AuxOutput1);
-    System.out.println("distance: " + talon.getSelectedSensorPosition());
-  }
+    //System.out.println("out: "+rearL.getMotorOutputVoltage()/rearL.getBusVoltage()+" speed: "+rearL.getSelectedSensorVelocity()+"position: "+rearL.getSelectedSensorPosition());   
+   // frontR.set(ControlMode.MotionMagic,100000,DemandType.AuxPID,0);
+    //rearR.set(ControlMode.Follower,0);
+  //  frontL.set(ControlMode.Follower,0);
+   // rearL.set(ControlMode.Follower,0);
+   frontR.set(ControlMode.MotionMagic,4096*5);
+   rearR.set(ControlMode.Follower,0);
+   rearL.set(ControlMode.Follower,0);
+   frontL.set(ControlMode.Follower,0);
+   
+   System.out.println("distance: "+frontR.getSelectedSensorPosition()+" speed: "+frontR.getSelectedSensorVelocity()+
+   " CLE: "+frontR.getClosedLoopError()+ " CLT: "+frontR.getClosedLoopTarget());
+    
+    }
 
   @Override
   public void testPeriodic() {}
