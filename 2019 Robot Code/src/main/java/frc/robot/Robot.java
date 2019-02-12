@@ -56,12 +56,7 @@ public class Robot extends TimedRobot
 
     driveTrain.enable();
 
-    try {
-     // UrlReader urlReader = new UrlReader();
-    } catch (Exception e) {
-      System.out.println("Reading the URL failed");
-      e.printStackTrace();
-    }
+    
     
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
