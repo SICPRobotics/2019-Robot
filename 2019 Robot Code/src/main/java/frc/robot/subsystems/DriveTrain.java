@@ -55,7 +55,7 @@ public class DriveTrain extends PIDSubsystem
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
-   // robotBase = new DifferentialDrive(left, right);
+    robotBase = new DifferentialDrive(left, right);
 
     //gyro = new ADXRS450_Gyro();
 
@@ -73,6 +73,7 @@ public class DriveTrain extends PIDSubsystem
   @Override
   protected double returnPIDInput() 
   {
+    System.out.println("returnPIDInput");
     try {
       System.out.println(urlReader.getCurrentData().getDouble("diff"));
       return urlReader.getCurrentData().getDouble("diff");

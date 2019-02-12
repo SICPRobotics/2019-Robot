@@ -54,9 +54,7 @@ public class Robot extends TimedRobot
     chooser.addOption("Do Nothing", new DoNothing());
     SmartDashboard.putData("Auto mode", chooser);
 
-    driveTrain.enable();
-
-    
+    //driveTrain.enable();
     
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
@@ -106,7 +104,8 @@ public class Robot extends TimedRobot
     {
       autoCommand.cancel();
     }
-    //driveTrain.enable();
+    driveTrain.enable();
+    //new StartVisionPID();
   }
 
   @Override
