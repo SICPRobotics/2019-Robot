@@ -57,7 +57,7 @@ public class Robot extends TimedRobot
     driveTrain.enable();
 
     try {
-      UrlReader urlReader = new UrlReader();
+     // UrlReader urlReader = new UrlReader();
     } catch (Exception e) {
       System.out.println("Reading the URL failed");
       e.printStackTrace();

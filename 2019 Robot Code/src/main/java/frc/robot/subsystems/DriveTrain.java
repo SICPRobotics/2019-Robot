@@ -21,11 +21,6 @@ public class DriveTrain extends PIDSubsystem
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
   ADXRS450_Gyro gyro; 
-
-  NetworkTableEntry entry;
-  NetworkTable table;
-  NetworkTableInstance inst;
-
   int count = 0;
   public DriveTrain()
   {
@@ -67,10 +62,7 @@ public class DriveTrain extends PIDSubsystem
   @Override
   protected double returnPIDInput() 
   {
-    SmartDashboard.putNumber("Output from vision", entry.getDouble(-10));
-    if (count == 0)
-      System.out.println("Input: " + entry.getDouble(0.0));
-    return entry.getDouble(0.0);
+    return 0.0;
     
   }
 
