@@ -1,41 +1,57 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.SetDrivePID;
+import frc.robot.commands.*;
 import frc.robot.subsystems.Beak;
+import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 
 public class Robot extends TimedRobot 
 {
-  public static DriveTrain driveTrain = new DriveTrain();
+  //public static DriveTrain driveTrain = new DriveTrain();
   //public static Elevator elevator = new Elevator();
   //public static Beak beak = new Beak();
+  public static DriveTrain driveTrain;
+  public static Elevator elevator;
+  public static Beak beak;
+  public static Claws claws;
   public static OI oi;
+
+  public static Joystick j1;
+  Compressor c;
 
   Command autoCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  Joystick j1, j2;
-  
+  boolean vision;
+
   @Override
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
    // driveTrain.resetGyro();
     
-    oi = new OI();
+    //oi = new OI();
 
+    //driveTrain.resetGyro();
+    //elevator = new Elevator();
+    //beak = new Beak();
+    //claws = new Claws();
+    //oi = new OI();
+    //c = new Compressor(0);
+    //c.setClosedLoopControl(true);
+    //INSERT CAMERA CODE HERE
     j1 = new Joystick(RobotMap.k_joystick1);
-    j2 = new Joystick(RobotMap.k_joystick2);
-   
-    chooser.setDefaultOption("Default Auto", new SetDrivePID(0, RobotMap.k_autoForward));
-    // chooser.addOption("My Auto", new MyAutoCommand());
+    
+    chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
+    chooser.addOption("Do Nothing", new DoNothing());
     SmartDashboard.putData("Auto mode", chooser);
 
     driveTrain.enable();
@@ -47,13 +63,12 @@ public class Robot extends TimedRobot
       e.printStackTrace();
     }
     
+    vision = false;
+    SmartDashboard.putBoolean("Running Vision", vision);
   }
 
   @Override
-  public void robotPeriodic() 
-  {
-    //TODO: any constant updates we want to record
-  }
+  public void robotPeriodic() {}
 
   @Override
   public void disabledInit() 
@@ -80,12 +95,20 @@ public class Robot extends TimedRobot
   public void autonomousPeriodic() 
   {
     Scheduler.getInstance().run();
+    if (!autoCommand.isRunning())
+      driveTrain.cheesyDrive(j1);
+    /*if(!vision)
+    {
+      driveTrain.cheesyDrive(j1);
+    }
+    else if(vision) {}*/
   }
 
   @Override
   public void teleopInit() 
   {
-    if (autoCommand != null) {
+    if (autoCommand != null) 
+    {
       autoCommand.cancel();
     }
     //driveTrain.enable();
@@ -98,6 +121,12 @@ public class Robot extends TimedRobot
     //driveTrain.cheesyDrive(j1);
     //driveTrain.calibrateTalons(j1);
     driveTrain.drive();
+    Scheduler.getInstance().run();    
+    if(!vision)
+    {
+      driveTrain.cheesyDrive(j1);
+    }
+    else if(vision) {}
   }
 
   @Override

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -19,7 +20,6 @@ public class DriveTrain extends PIDSubsystem
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
-
   ADXRS450_Gyro gyro; 
 
   NetworkTableEntry entry;
@@ -32,32 +32,37 @@ public class DriveTrain extends PIDSubsystem
     super("DriveTrain", 0.1, 0, 0, .001);
     setSetpoint(160);
 
-    frontL = new WPI_TalonSRX(RobotMap.k_frontL);
-    rearL = new WPI_TalonSRX(RobotMap.k_rearL);
-    //rearL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontR = new WPI_TalonSRX(0);
+    frontR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontR.setSensorPhase(true);
+    frontR.selectProfileSlot(0, 0);
+    frontR.config_kF(0,.3); //example: 
+    frontR.config_kP(0,0.2);//.0682) example: .2
+    frontR.config_kI(0,.00);
+    frontR.config_kD(0,0);
+    frontR.configMotionCruiseVelocity(3000,100); //example: 15000
+    frontR.configMotionAcceleration(2500,100); //example: 6000
+    frontR.setSelectedSensorPosition(0);
 
-    frontR = new WPI_TalonSRX(RobotMap.k_frontR);
-    rearR = new WPI_TalonSRX(RobotMap.k_rearR);
-    //rearR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    rearR = new WPI_TalonSRX(1);
+    rearR.follow(frontR);
+    
+    frontL = new WPI_TalonSRX(3);
+    frontL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
+    frontL.setSensorPhase(false);
 
+    rearL = new WPI_TalonSRX(2);
+    rearL.follow(frontL);
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
-    robotBase = new DifferentialDrive(left, right);
+   // robotBase = new DifferentialDrive(left, right);
 
-   // gyro = new ADXRS450_Gyro();
-    
+    //gyro = new ADXRS450_Gyro();
   }
   
   @Override
-  public void initDefaultCommand() 
-  {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-    inst = NetworkTableInstance.getDefault();
-    table = inst.getTable("/SmartDashboard");
-    entry = inst.getEntry("centerVal");
-  }
+  public void initDefaultCommand() {}
   
   @Override
   protected double returnPIDInput() 
@@ -70,12 +75,32 @@ public class DriveTrain extends PIDSubsystem
   }
 
   @Override
-  protected void usePIDOutput(double output) {
+  protected void usePIDOutput(double output) 
+  {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
     robotBase.tankDrive(0.5 + output, 0.5 - output);
     if (count++%100 ==0)
       System.out.println("PID Output: " + output);
+  }
+  
+  public void invertLeft(boolean invert)
+  {
+    rearL.setInverted(invert);
+    frontL.setInverted(invert);
+  }
+
+  public void magicDrive(double distance)
+  {
+    frontR.set(ControlMode.MotionMagic,distance);
+    //rearR.set(ControlMode.Follower,0);
+    //rearL.set(ControlMode.Follower,0);
+    frontL.set(ControlMode.Follower,0);  
+  }
+
+  public double encSpeed()
+  {
+    return frontR.getSelectedSensorVelocity();
   }
 
   public void cheesyDrive(Joystick j) //test
@@ -113,10 +138,7 @@ public class DriveTrain extends PIDSubsystem
     right.set(rightValue);    
   }
 
-  public void calibrateTalons(Joystick j)
-  {
-    robotBase.arcadeDrive(j.getRawAxis(1), 0);
-  }
+
 
   public double resetGyro() //test
   {
