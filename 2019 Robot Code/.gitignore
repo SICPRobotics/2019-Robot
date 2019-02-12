@@ -48,7 +48,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -136,6 +135,7 @@ $RECYCLE.BIN/
 
 ### Gradle ###
 .gradle
+!build.gradle
 /build/
 
 # Ignore Gradle GUI config
