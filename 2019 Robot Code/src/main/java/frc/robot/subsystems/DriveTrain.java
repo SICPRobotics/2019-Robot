@@ -14,17 +14,16 @@ import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.UrlReader;
 
 public class DriveTrain extends PIDSubsystem 
 {
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
-  ADXRS450_Gyro gyro; 
+  ADXRS450_Gyro gyro;
 
-  NetworkTableEntry entry;
-  NetworkTable table;
-  NetworkTableInstance inst;
+  UrlReader urlReader;
 
   int count = 0;
   public DriveTrain()
@@ -59,6 +58,13 @@ public class DriveTrain extends PIDSubsystem
    // robotBase = new DifferentialDrive(left, right);
 
     //gyro = new ADXRS450_Gyro();
+
+    try {
+      urlReader = new UrlReader();
+    } catch (Exception e) {
+      System.out.println("Reading the URL failed; URL probably invalid");
+      e.printStackTrace();
+    }
   }
   
   @Override
@@ -67,10 +73,12 @@ public class DriveTrain extends PIDSubsystem
   @Override
   protected double returnPIDInput() 
   {
-    SmartDashboard.putNumber("Output from vision", entry.getDouble(-10));
-    if (count == 0)
-      System.out.println("Input: " + entry.getDouble(0.0));
-    return entry.getDouble(0.0);
+    try {
+      return urlReader.getCurrentData().getDouble("diff");
+    } catch (Exception e) {
+      e.printStackTrace();
+      return 0.0;
+    }
     
   }
 
