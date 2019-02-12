@@ -125,7 +125,7 @@ public class MjpegStream {
 
         for(OutputStream os : openDataStreams){
             try {
-                //os.write(("--123456789000000000000987654321\r\n" + "Content-Type:application/json\r\n" + "Content-Length:" + data.length + "\r\n\r\n").getBytes());
+                os.write(("--123456789000000000000987654321\r\n" + "Content-Type:application/json\r\n" + "Content-Length:" + data.length + "\r\n\r\n").getBytes());
                 //os.write(("--123456789000000000000987654321\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: 1\r\n\r\n").getBytes());
                 os.write(data);
                // os.write(("\r\n\r\n").getBytes());
