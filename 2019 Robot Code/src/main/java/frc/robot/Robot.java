@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -49,6 +51,13 @@ public class Robot extends TimedRobot
 
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
+
+    try {
+			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
+		}
+		catch (Exception e){
+			System.out.println("failed camera 0" + e);
+		}
   }
 
   @Override
