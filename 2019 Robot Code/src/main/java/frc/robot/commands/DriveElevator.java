@@ -19,7 +19,7 @@ public class DriveElevator extends Command
   @Override
   protected void execute() 
   {
-    //Robot.elevator.slowDrive();
+    //Robot.elevator.slowDrive(.2);
   }
 
   @Override
@@ -31,8 +31,14 @@ public class DriveElevator extends Command
   @Override
   protected void end() 
   {
+    System.out.println("DriveElevator end");
+    //Robot.elevator1.slowDrive(0);
   }
 
   @Override
-  protected void interrupted() {}
+  protected void interrupted() 
+  {
+    System.out.println("DriveElevator interrupted");
+    //Robot.elevator1.slowDrive(0);
+  }
 }

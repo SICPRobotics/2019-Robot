@@ -24,4 +24,5 @@ public class RobotMap
   public static int k_cargoShip = 0;
   public static int k_midHatch = 0;
   public static int k_topHatch = 0;
+  public static int k_pickUpCargo = 0;
 }
