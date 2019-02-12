@@ -74,6 +74,7 @@ public class DriveTrain extends PIDSubsystem
   protected double returnPIDInput() 
   {
     try {
+      System.out.println(urlReader.getCurrentData().getDouble("diff"));
       return urlReader.getCurrentData().getDouble("diff");
     } catch (Exception e) {
       e.printStackTrace();
