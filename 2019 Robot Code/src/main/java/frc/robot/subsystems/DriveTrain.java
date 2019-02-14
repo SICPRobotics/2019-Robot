@@ -28,10 +28,11 @@ public class DriveTrain extends PIDSubsystem
   int count = 0;
   public DriveTrain()
   {
-    super("DriveTrain", 0.1, 0, 0, .001);
+    super("DriveTrain", 1, 0, 0, .00);
     setSetpoint(160);
 
     frontR = new WPI_TalonSRX(0);
+    /*
     frontR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     frontR.setSensorPhase(true);
     frontR.selectProfileSlot(0, 0);
@@ -42,20 +43,20 @@ public class DriveTrain extends PIDSubsystem
     frontR.configMotionCruiseVelocity(3000,100); //example: 15000
     frontR.configMotionAcceleration(2500,100); //example: 6000
     frontR.setSelectedSensorPosition(0);
-
+*/
     rearR = new WPI_TalonSRX(1);
-    rearR.follow(frontR);
+   // rearR.follow(frontR);
     
     frontL = new WPI_TalonSRX(3);
     frontL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     frontL.setSensorPhase(false);
 
     rearL = new WPI_TalonSRX(2);
-    rearL.follow(frontL);
+   // rearL.follow(frontL);
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
-    robotBase = new DifferentialDrive(left, right);
+    //robotBase = new DifferentialDrive(left, right);
 
     //gyro = new ADXRS450_Gyro();
 
@@ -73,14 +74,23 @@ public class DriveTrain extends PIDSubsystem
   @Override
   protected double returnPIDInput() 
   {
+    double pidIn;
     System.out.println("returnPIDInput");
     try {
       System.out.println(urlReader.getCurrentData().getDouble("diff"));
-      return urlReader.getCurrentData().getDouble("diff");
+      pidIn = urlReader.getCurrentData().getDouble("diff");
+      System.out.println("pidIn Set");
     } catch (Exception e) {
+      System.out.println("URL Read Failed");
       e.printStackTrace();
-      return 0.0;
+      pidIn = -0.0;
     }
+    System.out.println("PidIn" + pidIn);
+    if (new Double(pidIn).equals(new Double(-0.0))) {
+      System.out.println("Disabling");
+      disable();
+    }
+    return pidIn;
     
   }
 
@@ -89,8 +99,10 @@ public class DriveTrain extends PIDSubsystem
   {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
-    robotBase.tankDrive(0.5 + output, 0.5 - output);
-    if (count++%100 ==0)
+   // robotBase.tankDrive(0.5 + output, 0.5 - output);
+   left.set(output * 0.2);
+   right.set(output * 0.2);
+    //if (count++%100 ==0)
       System.out.println("PID Output: " + output);
   }
   

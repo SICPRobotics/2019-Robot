@@ -14,7 +14,7 @@ public class StartVisionPID extends Command
   protected void initialize() 
   {
     System.out.println("StartVisionPID init");
-    //Robot.driveTrain.enable();
+    Robot.driveTrain.enable();
   }
 
   @Override

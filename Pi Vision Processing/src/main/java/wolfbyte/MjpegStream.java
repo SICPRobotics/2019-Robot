@@ -81,7 +81,7 @@ public class MjpegStream {
         
     }
 
-    public void sendMat(Mat mat) {
+    public void sendMat(Mat mat, double diff) {
         //The BAD way of doing it
         byte[] img;
         try {
@@ -121,7 +121,7 @@ public class MjpegStream {
         //Update the data
         //byte[] data = Integer.toString(num % 10).getBytes();
         //byte[] data = Integer.toString(1).getBytes();
-        byte[] data = ("{ \"diff\": " + num + " }").getBytes();
+        byte[] data = ("{ \"diff\": " + diff + " }").getBytes();
 
         for(OutputStream os : openDataStreams){
             try {
@@ -141,7 +141,6 @@ public class MjpegStream {
                 }
             }
         }
-        num++;
     }
 
 }

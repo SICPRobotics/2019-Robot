@@ -272,12 +272,13 @@ public final class Main {
             ArrayList<Hatch> hatches = new ArrayList<Hatch>();
 
             rgb = new Mat();
+            //System.out.println("Ran");
             CvSink sink = new CvSink("opencv_wolfbyte axis camera");
             sink.setSource(axisCamera);
             sink.grabFrame(rgb);
             sink.close();
 
-            Imgcodecs.imwrite("/home/pi/WhatTheCameraSees.jpg", rgb);
+            //Imgcodecs.imwrite("/home/pi/WhatTheCameraSees.jpg", rgb);
 
             if (contours.size() >= 2) {
                 for (MatOfPoint contour : contours) {
@@ -293,9 +294,9 @@ public final class Main {
                 }
             }
 
-            Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
+            //Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
 
-            stream.sendMat(rgb);
+            stream.sendMat(rgb, elementManager.getDifference());
         });
 
         visionThread.start();
@@ -308,7 +309,7 @@ public final class Main {
         int inc = 0;
 
         for (;;) {
-            System.out.println("Ran");
+            
             if (!axisCamera.isConnected()) {
                 System.out.println("Not connected to Axis Camera");
             } else if (axisCamera.isConnected()) {

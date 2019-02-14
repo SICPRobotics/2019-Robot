@@ -114,6 +114,7 @@ public class Robot extends TimedRobot
    // Scheduler.getInstance().run();
     //driveTrain.cheesyDrive(j1);
     //driveTrain.calibrateTalons(j1);
+    /*
     driveTrain.drive();
     Scheduler.getInstance().run();    
     if(!vision)
@@ -121,6 +122,7 @@ public class Robot extends TimedRobot
       driveTrain.cheesyDrive(j1);
     }
     else if(vision) {}
+    */
   }
 
   @Override

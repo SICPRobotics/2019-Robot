@@ -27,8 +27,10 @@ public class UrlReader
     public JSONObject getCurrentData() throws IOException {
         String line;
         while ((line = reader.readLine()) != null) {
-            if (line.charAt(0) == '{') {
+            if (line.length() > 0 && line.charAt(0) == '{') {
                 data = new JSONObject(line.substring(0, line.length() - 32));
+                break;
+                //System.out.println(data.toString());
             }
         }
         return data;

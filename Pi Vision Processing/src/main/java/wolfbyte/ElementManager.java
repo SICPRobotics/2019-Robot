@@ -12,10 +12,12 @@ public class ElementManager {
     private ArrayList<Hatch> hatches;
     private int currentId;
     private int camWidth = 160;
+    private Hatch selectedHatch;
 
     public ElementManager() {
         hatches = new ArrayList<Hatch>();
         currentId = 0;
+        selectedHatch = null;
     }
     public void updateTapes(ArrayList<Tape> tapesFound){
         /*ArrayList<Hatch> newHatches = new ArrayList();
@@ -48,13 +50,19 @@ public class ElementManager {
                 }
             }
             middleHatch.selected = true;
+            selectedHatch = middleHatch;
+        } else {
+            selectedHatch = null;
         }
     }
     public static ArrayList<Hatch> matchTapes(ArrayList<Tape> tapes){
         ArrayList<Hatch> foundHatches = new ArrayList<Hatch>();
         for (Tape tape : tapes) {
             for (Tape possibleCounterpart : tapes) {
-                if (tape != possibleCounterpart && tape.getSide() != possibleCounterpart.getSide() && Imgproc.pointPolygonTest(new MatOfPoint2f(possibleCounterpart.getContour().toArray()), tape.predictCounterpart(), false) >= 0 ) {
+                if (tape != possibleCounterpart && tape.getSide() != possibleCounterpart.getSide() &&
+                (Imgproc.pointPolygonTest(new MatOfPoint2f(possibleCounterpart.getContour().toArray()), tape.predictCounterpart(), false) >= 0 ||
+                 Math.sqrt(Math.pow(tape.predictCounterpart().x - possibleCounterpart.getRect().center.x,2) + Math.pow(tape.predictCounterpart().y - possibleCounterpart.getRect().center.y,2)) < 20)) {
+                    //System.out.println("        " + Math.sqrt(Math.pow(tape.getRect().center.x - possibleCounterpart.getRect().center.x,2) + Math.pow(tape.getRect().center.y - possibleCounterpart.getRect().center.y,2)));
                     Tape left = tape.getSide() == "left" ? tape : possibleCounterpart;
                     Tape right = tape.getSide() == "right" ? tape : possibleCounterpart;
 
@@ -74,5 +82,14 @@ public class ElementManager {
     private int nextId() {
         currentId++;
         return currentId - 1;
+    }
+
+    public double getDifference() {
+        if (selectedHatch != null) {
+            System.out.println(selectedHatch.getCenter().x);
+            return selectedHatch.getCenter().x;
+        } else {
+            return -0.0;
+        }
     }
 }
