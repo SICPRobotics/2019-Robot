@@ -27,26 +27,26 @@ public class DriveTrain extends PIDSubsystem
     frontR.setSensorPhase(true);
     frontR.selectProfileSlot(0, 0);
     frontR.config_kF(0,.3); //example: 
-    frontR.config_kP(0,0.2);//.0682) example: .2
-    frontR.config_kI(0,.00);
+    frontR.config_kP(0,.2);//.0682) example: .2
+    frontR.config_kI(0,0);
     frontR.config_kD(0,0);
     frontR.configMotionCruiseVelocity(3000,100); //example: 15000
     frontR.configMotionAcceleration(2500,100); //example: 6000
     frontR.setSelectedSensorPosition(0);
 
     rearR = new WPI_TalonSRX(1);
-    rearR.follow(frontR);
     
     frontL = new WPI_TalonSRX(3);
     frontL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     frontL.setSensorPhase(false);
 
     rearL = new WPI_TalonSRX(2);
-    rearL.follow(frontL);
+    
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
-   // robotBase = new DifferentialDrive(left, right);
+    robotBase = new DifferentialDrive(left, right);
+    robotBase.setExpiration(100);
 
     //gyro = new ADXRS450_Gyro();
   }

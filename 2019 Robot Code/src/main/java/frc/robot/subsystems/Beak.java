@@ -10,7 +10,7 @@ public class Beak extends Subsystem
 
   public Beak()
   {
-    beakSolo = new DoubleSolenoid(RobotMap.k_beakSolo1, RobotMap.k_beakSolo2);
+    //beakSolo = new DoubleSolenoid(RobotMap.k_beakSolo1, RobotMap.k_beakSolo2);
   }
   
   @Override

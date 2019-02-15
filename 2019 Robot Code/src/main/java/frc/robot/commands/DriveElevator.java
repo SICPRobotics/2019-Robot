@@ -39,6 +39,7 @@ public class DriveElevator extends Command
   protected void interrupted() 
   {
     System.out.println("DriveElevator interrupted");
+    end();
     //Robot.elevator1.slowDrive(0);
   }
 }

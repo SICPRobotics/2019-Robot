@@ -36,6 +36,7 @@ public class ToggleBeak extends Command
   @Override
   protected void end() 
   {
+    System.out.println("ToggleBeak end");
     direction = !direction;
   }
 

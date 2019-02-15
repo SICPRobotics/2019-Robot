@@ -28,12 +28,13 @@ public class MoveElevatorMagic extends Command
   @Override
   protected boolean isFinished() 
   {
-    return false;
+    return true;
   }
 
   @Override
   protected void end() 
   {
+    System.out.println("MoveElevatorMagic end");
   }
 
   @Override

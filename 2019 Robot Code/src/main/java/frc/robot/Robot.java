@@ -36,15 +36,14 @@ public class Robot extends TimedRobot
   {
     driveTrain = new DriveTrain();
     //driveTrain.resetGyro();
-    //elevator = new Elevator();
-    //beak = new Beak();
-    //claws = new Claws();
-    //oi = new OI();
+    elevator = new Elevator();
+    beak = new Beak();
+    claws = new Claws();
     //c = new Compressor(0);
     //c.setClosedLoopControl(true);
     //INSERT CAMERA CODE HERE
-    j1 = new Joystick(RobotMap.k_joystick1);
-    
+    j1 = new Joystick(0);
+    oi = new OI(); 
     chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
     chooser.addOption("Do Nothing", new DoNothing());
     SmartDashboard.putData("Auto mode", chooser);
@@ -52,12 +51,18 @@ public class Robot extends TimedRobot
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
 
-    try {
+    /*try {
 			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
 		catch (Exception e){
 			System.out.println("failed camera 0" + e);
+    }
+    try {
+			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
+		catch (Exception e){
+			System.out.println("failed camera 0" + e);
+		}*/
   }
 
   @Override

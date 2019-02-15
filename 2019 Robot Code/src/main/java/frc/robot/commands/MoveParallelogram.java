@@ -19,17 +19,19 @@ public class MoveParallelogram extends Command
   @Override
   protected void execute() 
   {
+    Robot.elevator.moveParallel();
   }
 
   @Override
   protected boolean isFinished() 
   {
-    return false;
+    return true;
   }
 
   @Override
   protected void end() 
   {
+    System.out.println("MoveParallogram end");
   }
 
   @Override

@@ -7,7 +7,7 @@ import frc.robot.commands.*;
 
 public class OI 
 {
-  XboxController xbox = new XboxController(RobotMap.k_xbox);
+  XboxController xbox = new XboxController(1);
 
   Button buttonA = new JoystickButton(xbox, 1); 
   Button buttonB = new JoystickButton(xbox, 2); 

@@ -48,4 +48,9 @@ public class Elevator extends Subsystem
   {
     return elevator1.getSelectedSensorPosition();
   }
+
+  public void moveParallel()
+  {
+    
+  }
 }
