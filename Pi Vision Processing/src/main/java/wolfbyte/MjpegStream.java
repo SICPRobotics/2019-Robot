@@ -83,15 +83,21 @@ public class MjpegStream {
 
     public void sendMat(Mat mat, double diff) {
         //The BAD way of doing it
-        byte[] img;
+        /*byte[] img;
         try {
             img = Files.readAllBytes(file.toPath());
         } catch (IOException e) {
             System.out.println("Failed to read TapesFound.jpg:");
             System.out.println(e.getLocalizedMessage());
             img = new byte[0];
-        }
-
+        }*/
+	
+	//The new way
+	MatOfByte matOfByte = new MatOfByte();
+	Imgcodecs.imencode(".jpg", mat, matOfByte);
+	byte[] img = matOfByte.toArray();
+	BufferedImage bufImage = null;
+	
 
         //Convert! MAKE SURE THIS ACTUALLY WORKS -- not working
         /*int length = (int) (mat.total() * mat.elemSize());
