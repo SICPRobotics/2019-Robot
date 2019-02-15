@@ -18,6 +18,17 @@ import frc.robot.UrlReader;
 
 public class DriveTrain extends PIDSubsystem 
 {
+
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_BLACK = "\u001B[30m";
+  public static final String ANSI_RED = "\u001B[31m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_YELLOW = "\u001B[33m";
+  public static final String ANSI_BLUE = "\u001B[34m";
+  public static final String ANSI_PURPLE = "\u001B[35m";
+  public static final String ANSI_CYAN = "\u001B[36m";
+  public static final String ANSI_WHITE = "\u001B[37m";
+
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
@@ -64,7 +75,7 @@ public class DriveTrain extends PIDSubsystem
     try {
       urlReader = new UrlReader();
     } catch (Exception e) {
-      System.out.println("Reading the URL failed; URL probably invalid");
+      System.out.println("Reading the URL failed.");
       e.printStackTrace();
     }
   }
@@ -86,9 +97,9 @@ public class DriveTrain extends PIDSubsystem
       e.printStackTrace();
       pidIn = -0.0;
     }
-    System.out.println("PidIn" + pidIn);
+    //System.out.println("PidIn" + pidIn);
     if (new Double(pidIn).equals(new Double(-0.0))) {
-      System.out.println("Disabling");
+      System.out.println("Lost track of hatch. Disabling.");
       disable();
     }
     return pidIn;
@@ -101,8 +112,8 @@ public class DriveTrain extends PIDSubsystem
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
    // robotBase.tankDrive(0.5 + output, 0.5 - output);
-   left.set(output * 0.2);
-   right.set(output * 0.2);
+   left.set(output * -0.2);
+   right.set(output * -0.2);
     //if (count++%100 ==0)
       System.out.println("PID Output: " + output);
   }

@@ -280,7 +280,7 @@ public final class Main {
 
             //Imgcodecs.imwrite("/home/pi/WhatTheCameraSees.jpg", rgb);
 
-            if (contours.size() >= 2) {
+           // if (contours.size() >= 2) {
                 for (MatOfPoint contour : contours) {
                     Tape tape = new Tape(contour);
                     tapes.add(tape);
@@ -292,7 +292,7 @@ public final class Main {
                 for (Hatch hatch : elementManager.getHatches()){
                     hatch.drawOn(rgb);
                 }
-            }
+            //}
 
             //Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
 

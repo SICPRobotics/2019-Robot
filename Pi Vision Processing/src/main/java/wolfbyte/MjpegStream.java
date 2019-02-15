@@ -1,5 +1,6 @@
 package wolfbyte;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,6 +14,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 
 public class MjpegStream {
@@ -137,13 +139,13 @@ public class MjpegStream {
                // os.write(("\r\n\r\n").getBytes());
                 os.flush();
             } catch (IOException e) {
-                System.out.println(e.getLocalizedMessage());
-                e.printStackTrace();
+                //System.out.println(e.getLocalizedMessage());
+                //e.printStackTrace();
                 try {
                     os.close();
                 } catch (IOException ee) {
-                    System.out.println(ee.getLocalizedMessage());
-                    System.out.println("IOExeption and output stream could not be closed");
+                    //System.out.println(ee.getLocalizedMessage());
+                    //System.out.println("IOExeption and output stream could not be closed");
                 }
             }
         }
