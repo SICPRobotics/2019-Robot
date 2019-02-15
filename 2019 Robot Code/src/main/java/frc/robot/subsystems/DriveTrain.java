@@ -26,6 +26,7 @@ public class DriveTrain extends PIDSubsystem
   UrlReader urlReader;
 
   int count = 0;
+  double camWidth = 320;
   public DriveTrain()
   {
     super("DriveTrain", 1, 0, 0, .00);
@@ -187,5 +188,15 @@ public class DriveTrain extends PIDSubsystem
   public void drive()
   {
     robotBase.tankDrive(.3, .3);
+  }
+  
+  //Returns the rotation based on the FoV of the camera. Does not take into account current gyro rotation. 
+  //0deg is the current robot rotation.
+  public double toRotation(double pixelsX){
+    
+    double fov = 110.0;
+    double frac = pixelsX / camWidth;
+    
+    return (fov * frac) - (fov / 2);
   }
 }
