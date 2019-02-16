@@ -14,6 +14,7 @@ import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Parallelogram;
 
 public class Robot extends TimedRobot 
 {
@@ -21,8 +22,8 @@ public class Robot extends TimedRobot
   public static Elevator elevator;
   public static Beak beak;
   public static Claws claws;
+  public static Parallelogram parallel;
   public static OI oi;
-
   public static Joystick j1;
   Compressor c;
 
@@ -35,34 +36,34 @@ public class Robot extends TimedRobot
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
-    //driveTrain.resetGyro();
     elevator = new Elevator();
     beak = new Beak();
     claws = new Claws();
+    parallel = new Parallelogram();
+    oi = new OI(); 
+    j1 = new Joystick(0);
     //c = new Compressor(0);
     //c.setClosedLoopControl(true);
-    //INSERT CAMERA CODE HERE
-    j1 = new Joystick(0);
-    oi = new OI(); 
-    chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
+    
+    chooser.setDefaultOption("Auto Drive Off", new SandStorm());
     chooser.addOption("Do Nothing", new DoNothing());
     SmartDashboard.putData("Auto mode", chooser);
 
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
 
-    /*try {
+    try {
 			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
 		catch (Exception e){
-			System.out.println("failed camera 0" + e);
+			System.out.println("failed camera 0"  + e);
     }
     try {
 			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
 		catch (Exception e){
-			System.out.println("failed camera 0" + e);
-		}*/
+			System.out.println("failed camera 10" + e);
+		}
   }
 
   @Override

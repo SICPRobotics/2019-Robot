@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
 
 public class Beak extends Subsystem 
 {
@@ -10,7 +9,7 @@ public class Beak extends Subsystem
 
   public Beak()
   {
-    //beakSolo = new DoubleSolenoid(RobotMap.k_beakSolo1, RobotMap.k_beakSolo2);
+    //beakSolo = new DoubleSolenoid(0,1);
   }
   
   @Override

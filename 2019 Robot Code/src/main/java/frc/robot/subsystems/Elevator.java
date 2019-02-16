@@ -9,15 +9,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem 
 {
   WPI_TalonSRX elevator1, elevator2;
-  VictorSPX parallel1, parallel2;
-
+  
   public Elevator() 
   {
     elevator1 = new WPI_TalonSRX(4);
     elevator1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     elevator1.setSensorPhase(false);
     elevator1.selectProfileSlot(0, 0);
-    elevator1.config_kF(0, .2);
+    elevator1.config_kF(0, .05); //calculated: .05
     elevator1.config_kP(0, 0);
     elevator1.config_kI(0, 0);
     elevator1.config_kD(0, 0);
@@ -55,10 +54,5 @@ public class Elevator extends Subsystem
   public void setEncPosition(int set)
   {
     elevator1.setSelectedSensorPosition(set);
-  }
-
-  public void moveParallel()
-  {
-    
   }
 }

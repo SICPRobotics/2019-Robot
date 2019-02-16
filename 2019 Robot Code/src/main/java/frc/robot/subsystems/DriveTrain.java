@@ -46,7 +46,8 @@ public class DriveTrain extends PIDSubsystem
     right = new SpeedControllerGroup(frontR, rearR);
 
     robotBase = new DifferentialDrive(left, right);
-    robotBase.setExpiration(100);
+    robotBase.feedWatchdog(); //might mess stuff up
+    //getWatchdog().setExpiration(100);
 
     //gyro = new ADXRS450_Gyro();
   }
@@ -61,11 +62,7 @@ public class DriveTrain extends PIDSubsystem
   }
 
   @Override
-  protected void usePIDOutput(double output) 
-  {
-    // Use output to drive your system, like a motor
-    // e.g. yourMotor.set(output);
-  }
+  protected void usePIDOutput(double output) {}
   
   public void invertLeft(boolean invert)
   {

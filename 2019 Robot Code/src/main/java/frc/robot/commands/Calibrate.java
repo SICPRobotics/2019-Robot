@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -10,11 +8,11 @@ public class Calibrate extends Command
 {
   Timer timer = new Timer();
 
-  public Calibrate() {
+  public Calibrate() 
+  {
     requires(Robot.elevator);
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() 
   {
@@ -22,14 +20,12 @@ public class Calibrate extends Command
     timer.start();
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() 
   {
     Robot.elevator.slowDrive(.082);
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() 
   {
@@ -38,7 +34,6 @@ public class Calibrate extends Command
     return false;
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() 
   {
@@ -46,8 +41,6 @@ public class Calibrate extends Command
     Robot.elevator.slowDrive(0);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }

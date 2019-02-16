@@ -33,7 +33,8 @@ public class OI
     buttonY.whenPressed(new MoveElevatorMagic(1110000));
     buttonLB.whenPressed(new ToggleClaws(0));
     buttonRB.whileHeld(new DriveElevator(.3));
-    buttonBack.whenPressed(new MoveParallelogram());
+    buttonBack.whenPressed(new MoveParallelogramUp());
+    buttonStart.whenPressed(new MoveParallelogramDown());
 
     j1.whenPressed(new StartVisionPID());
     j1.whenReleased(new DisableVisionPID());
