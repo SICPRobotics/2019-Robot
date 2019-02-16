@@ -13,10 +13,10 @@ public class Claws extends Subsystem
 
   public Claws()
   {
-    claw1 = new VictorSPX(RobotMap.k_claw1);
+    /*claw1 = new VictorSPX(RobotMap.k_claw1);
     claw2 = new VictorSPX(RobotMap.k_claw2);
     claw2.setInverted(true);
-    claw2.follow(claw1);
+    claw2.follow(claw1);*/
   }
   
   @Override

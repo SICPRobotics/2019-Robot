@@ -21,19 +21,27 @@ public class OI
   Button rightThumb = new JoystickButton(xbox, 10); //open
  
   Button j1 = new JoystickButton(Robot.j1, 1);
+  Button j2 = new JoystickButton(Robot.j1, 2);
+  Button j3 = new JoystickButton(Robot.j1, 3);
+  Button j4 = new JoystickButton(Robot.j1, 4);
 
   public OI()
   {
-    buttonA.whenPressed(new MoveElevatorMagic(RobotMap.k_cargoShip));
-    buttonB.whenPressed(new MoveElevatorMagic(RobotMap.k_midHatch));
+    buttonA.whenPressed(new MoveElevatorMagic(191413));
+    buttonB.whenPressed(new MoveElevatorMagic(762204));
     buttonX.whenPressed(new ToggleBeak());
-    buttonY.whenPressed(new MoveElevatorMagic(RobotMap.k_topHatch));
+    buttonY.whenPressed(new MoveElevatorMagic(1110000));
     buttonLB.whenPressed(new ToggleClaws(0));
-    buttonRB.whileHeld(new DriveElevator());
+    buttonRB.whileHeld(new DriveElevator(.3));
     buttonBack.whenPressed(new MoveParallelogram());
 
     j1.whenPressed(new StartVisionPID());
     j1.whenReleased(new DisableVisionPID());
+
+    j2.whenPressed(new Calibrate());
+    j3.whileHeld(new DriveElevator(.4));
+    j4.whileHeld(new DriveElevator(-.4));
+
   }
 
   // Start the command when the button is pressed and let it run the command

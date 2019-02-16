@@ -1,11 +1,13 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class MoveElevatorMagic extends Command 
 {
   double targetPos;
+  Timer timer = new Timer();
 
   public MoveElevatorMagic(double set) 
   {
@@ -17,18 +19,19 @@ public class MoveElevatorMagic extends Command
   protected void initialize() 
   {
     System.out.println("MoveElevatorMagic init");
+    timer.start();
   }
 
   @Override
   protected void execute() 
   {
-    //Robot.elevator.magicMotion(targetPos);
+    Robot.elevator.magicMotion(targetPos);
   }
 
   @Override
   protected boolean isFinished() 
   {
-    return true;
+    return false;
   }
 
   @Override
@@ -38,6 +41,8 @@ public class MoveElevatorMagic extends Command
   }
 
   @Override
-  protected void interrupted() {
+  protected void interrupted() 
+  {
+    end();
   }
 }
