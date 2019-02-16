@@ -38,6 +38,11 @@ public class DriveTrain extends PIDSubsystem
 
   int count = 0;
   double camWidth = 320;
+
+  String status;
+
+  boolean persist;
+
   public DriveTrain()
   {
     super("DriveTrain", 1, 0, 0, .00);
@@ -71,12 +76,26 @@ public class DriveTrain extends PIDSubsystem
     //robotBase = new DifferentialDrive(left, right);
 
     //gyro = new ADXRS450_Gyro();
+    status = "starting";
 
+    persist = SmartDashboard.getBoolean("Persist in Vision: ", false);
+
+    readUrl();
+  }
+
+  public void readUrl() {
     try {
       urlReader = new UrlReader();
     } catch (Exception e) {
-      System.out.println("Reading the URL failed.");
+      System.out.println("Reading the URL failed. Retrying soon.");
       e.printStackTrace();
+      new java.util.Timer().schedule(
+        new java.util.TimerTask() {
+          @Override
+          public void run() {
+            readUrl();
+          }
+        }, 2000);
     }
   }
   
@@ -86,22 +105,34 @@ public class DriveTrain extends PIDSubsystem
   @Override
   protected double returnPIDInput() 
   {
+    //Persist: if we lose track of the target, should we continue looking for it?
+    persist = SmartDashboard.getBoolean("Persist in Vision: ", persist);
+
     double pidIn;
     System.out.println("returnPIDInput");
     try {
       System.out.println(urlReader.getCurrentData().getDouble("diff"));
       pidIn = urlReader.getCurrentData().getDouble("diff");
       System.out.println("pidIn Set");
+      status = "Operating";
     } catch (Exception e) {
       System.out.println("URL Read Failed");
       e.printStackTrace();
+      status = "Failed to Read URL";
       pidIn = -0.0;
     }
     //System.out.println("PidIn" + pidIn);
     if (new Double(pidIn).equals(new Double(-0.0))) {
       System.out.println("Lost track of hatch. Disabling.");
-      disable();
+      status = "No Hatch Found";
+      if (!persist) {
+        disable();
+      }
     }
+      
+
+    SmartDashboard.putString("Vision Status: ", status);
+    SmartDashboard.putBoolean("Persist in Vision: ", persist);
     return pidIn;
     
   }
