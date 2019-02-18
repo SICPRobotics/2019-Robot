@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.net.InetAddress;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -32,10 +34,18 @@ public class Robot extends TimedRobot
 
   boolean vision;
 
+  InetAddress piAddress;
+
   @Override
   public void robotInit() 
   {
     driveTrain = new DriveTrain();
+
+    try {
+      piAddress = InetAddress.getByName("10.58.22.48");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
    // driveTrain.resetGyro();
     
     //oi = new OI();
@@ -56,12 +66,26 @@ public class Robot extends TimedRobot
 
     //driveTrain.enable();
     
-    vision = false;
+    /*vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
+    SmartDashboard.putData("Run Vision Alignment", new StartVisionPID());
+    SmartDashboard.putData("End Vision Alignment", new DisableVisionPID());*/
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    if (SmartDashboard.getBoolean("Running Vision", false)){
+      driveTrain.enable();
+    } else {
+      driveTrain.disable();
+    }
+    SmartDashboard.putString("Vision Status: ", driveTrain.status);
+    try {
+      SmartDashboard.putBoolean("Pi Ping", piAddress.isReachable(1000));
+    } catch( Exception e) {
+      e.printStackTrace();
+    }
+  }
 
   @Override
   public void disabledInit() 
@@ -104,7 +128,7 @@ public class Robot extends TimedRobot
     {
       autoCommand.cancel();
     }
-    driveTrain.enable();
+    //driveTrain.enable();
     //new StartVisionPID();
   }
 

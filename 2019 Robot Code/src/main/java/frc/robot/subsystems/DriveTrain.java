@@ -39,16 +39,18 @@ public class DriveTrain extends PIDSubsystem
   int count = 0;
   double camWidth = 320;
 
-  String status;
+  public String status;
 
-  boolean persist;
+  private boolean persist;
+
+  private boolean isEnabled;
 
   public DriveTrain()
   {
     super("DriveTrain", 1, 0, 0, .00);
     setSetpoint(160);
 
-    frontR = new WPI_TalonSRX(0);
+    frontR = new WPI_TalonSRX(3);
     /*
     frontR.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     frontR.setSensorPhase(true);
@@ -64,11 +66,11 @@ public class DriveTrain extends PIDSubsystem
     rearR = new WPI_TalonSRX(1);
    // rearR.follow(frontR);
     
-    frontL = new WPI_TalonSRX(3);
+    frontL = new WPI_TalonSRX(2);
     frontL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     frontL.setSensorPhase(false);
 
-    rearL = new WPI_TalonSRX(2);
+    rearL = new WPI_TalonSRX(0);
    // rearL.follow(frontL);
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
@@ -101,7 +103,25 @@ public class DriveTrain extends PIDSubsystem
   
   @Override
   public void initDefaultCommand() {}
-  
+
+  @Override
+  public void enable() {
+    if (!isEnabled){
+      super.enable();
+      SmartDashboard.putBoolean("Running Vision", true);
+      isEnabled = true;
+      System.out.println("Enabled");
+    }
+  }
+
+  @Override
+  public void disable() {
+    super.disable();
+    SmartDashboard.putBoolean("Running Vision", false);
+    isEnabled = false;
+    status = status == "Operating" ? "Vision Disabled" : status;
+  }
+
   @Override
   protected double returnPIDInput() 
   {
@@ -124,14 +144,16 @@ public class DriveTrain extends PIDSubsystem
     //System.out.println("PidIn" + pidIn);
     if (new Double(pidIn).equals(new Double(-0.0))) {
       System.out.println("Lost track of hatch. Disabling.");
-      status = "No Hatch Found";
+      
       if (!persist) {
         disable();
       }
+
+      status = status == "Failed to Read URL" ? status : "No Hatch Found";
     }
       
 
-    SmartDashboard.putString("Vision Status: ", status);
+    
     SmartDashboard.putBoolean("Persist in Vision: ", persist);
     return pidIn;
     
@@ -143,10 +165,15 @@ public class DriveTrain extends PIDSubsystem
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
    // robotBase.tankDrive(0.5 + output, 0.5 - output);
-   left.set(output * -0.2);
-   right.set(output * -0.2);
+   double driveSpeed = SmartDashboard.getNumber("Vision Drive Speed", -0.0);
+   if (new Double(driveSpeed).equals(new Double(-0.0))){
+     SmartDashboard.putNumber("Vision Drive Speed", 0.2);
+     driveSpeed = 0.2;
+   }
+   left.set((output * -0.2) - driveSpeed);
+   right.set((output * -0.2) + driveSpeed);
     //if (count++%100 ==0)
-      System.out.println("PID Output: " + output);
+      //System.out.println("PID Output: " + output);
   }
   
   public void invertLeft(boolean invert)
@@ -240,5 +267,9 @@ public class DriveTrain extends PIDSubsystem
     double frac = pixelsX / camWidth;
     
     return (fov * frac) - (fov / 2);
+  }
+
+  public boolean isEnabled() {
+    return isEnabled;
   }
 }
