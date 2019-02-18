@@ -129,11 +129,13 @@ public class DriveTrain extends PIDSubsystem
     persist = SmartDashboard.getBoolean("Persist in Vision: ", persist);
 
     double pidIn;
-    System.out.println("returnPIDInput");
+    //System.out.println("returnPIDInput");
     try {
-      System.out.println(urlReader.getCurrentData().getDouble("diff"));
-      pidIn = urlReader.getCurrentData().getDouble("diff");
-      System.out.println("pidIn Set");
+      //System.out.println(urlReader.getCurrentData().getDouble("diff"));
+      pidIn = urlReader.getCurrentData().getJSONObject("center").getDouble("x");
+      System.out.println(pidIn);
+      pidIn = -0.0;
+      //System.out.println("pidIn Set");
       status = "Operating";
     } catch (Exception e) {
       System.out.println("URL Read Failed");
@@ -143,7 +145,7 @@ public class DriveTrain extends PIDSubsystem
     }
     //System.out.println("PidIn" + pidIn);
     if (new Double(pidIn).equals(new Double(-0.0))) {
-      System.out.println("Lost track of hatch. Disabling.");
+      //System.out.println("Lost track of hatch. Disabling.");
       
       if (!persist) {
         disable();

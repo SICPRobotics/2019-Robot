@@ -296,7 +296,7 @@ public final class Main {
 
             //Imgcodecs.imwrite("/home/pi/TapesFound.jpg", rgb);
 
-            stream.sendMat(rgb, elementManager.getDifference());
+            stream.sendMat(rgb, elementManager);
         });
 
         visionThread.start();

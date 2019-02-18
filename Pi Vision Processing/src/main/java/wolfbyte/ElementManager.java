@@ -92,4 +92,8 @@ public class ElementManager {
             return -0.0;
         }
     }
+
+    public Hatch getSelectedHatch() {
+        return selectedHatch;
+    }
 }

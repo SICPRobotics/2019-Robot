@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpServer;
@@ -83,7 +84,7 @@ public class MjpegStream {
         
     }
 
-    public void sendMat(Mat mat, double diff) {
+    public void sendMat(Mat mat, ElementManager elementManager) {
         //The BAD way of doing it
         /*byte[] img;
         try {
@@ -129,7 +130,20 @@ public class MjpegStream {
         //Update the data
         //byte[] data = Integer.toString(num % 10).getBytes();
         //byte[] data = Integer.toString(1).getBytes();
-        byte[] data = ("{ \"diff\": " + diff + " }").getBytes();
+        //byte[] data = ("{ \"diff\": " + diff + ", size }").getBytes();
+        Gson gson = new Gson();
+
+        JsonObject hatchData = new JsonObject();
+
+        try {
+            hatchData.addProperty("center", gson.toJson(elementManager.getSelectedHatch().getCenter()));
+            hatchData.addProperty("left", gson.toJson(elementManager.getSelectedHatch().getTapeOnSide("left").getRect()));
+            hatchData.addProperty("right", gson.toJson(elementManager.getSelectedHatch().getTapeOnSide("right").getRect()));
+        } catch(NullPointerException e) {
+            
+        }
+
+        byte[] data = gson.toJson(hatchData).getBytes();
 
         for(OutputStream os : openDataStreams){
             try {
