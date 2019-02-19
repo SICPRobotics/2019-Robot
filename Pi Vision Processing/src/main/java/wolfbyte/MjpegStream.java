@@ -139,8 +139,10 @@ public class MjpegStream {
             hatchData.addProperty("center", gson.toJson(elementManager.getSelectedHatch().getCenter()));
             hatchData.addProperty("left", gson.toJson(elementManager.getSelectedHatch().getTapeOnSide("left").getRect()));
             hatchData.addProperty("right", gson.toJson(elementManager.getSelectedHatch().getTapeOnSide("right").getRect()));
+            System.out.println(elementManager.getSelectedHatch().getCenter());
         } catch(NullPointerException e) {
-            
+            //There is not a hatch
+            System.out.println("No Hatch Found!");
         }
 
         byte[] data = gson.toJson(hatchData).getBytes();

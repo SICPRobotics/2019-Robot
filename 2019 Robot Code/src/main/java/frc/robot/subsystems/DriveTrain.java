@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.UrlReader;
 
@@ -131,11 +132,11 @@ public class DriveTrain extends PIDSubsystem
     double pidIn;
     //System.out.println("returnPIDInput");
     try {
-      //System.out.println(urlReader.getCurrentData().getDouble("diff"));
-      pidIn = urlReader.getCurrentData().getJSONObject("center").getDouble("x");
-      System.out.println(pidIn);
+      //pidIn = urlReader.getCurrentData().get("center").getDouble("x");
+      //System.out.println(pidIn);
       pidIn = -0.0;
       //System.out.println("pidIn Set");
+      System.out.println(urlReader.getCurrentData().toString());
       status = "Operating";
     } catch (Exception e) {
       System.out.println("URL Read Failed");
@@ -167,13 +168,15 @@ public class DriveTrain extends PIDSubsystem
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
    // robotBase.tankDrive(0.5 + output, 0.5 - output);
-   double driveSpeed = SmartDashboard.getNumber("Vision Drive Speed", -0.0);
-   if (new Double(driveSpeed).equals(new Double(-0.0))){
-     SmartDashboard.putNumber("Vision Drive Speed", 0.2);
-     driveSpeed = 0.2;
+   if (isEnabled){
+      double driveSpeed = SmartDashboard.getNumber("Vision Drive Speed", -0.0);
+      if (new Double(driveSpeed).equals(new Double(-0.0))){
+        SmartDashboard.putNumber("Vision Drive Speed", 0.2);
+        driveSpeed = 0.2;
+      }
+      left.set((output * -0.2) - driveSpeed);
+      right.set((output * -0.2) + driveSpeed);
    }
-   left.set((output * -0.2) - driveSpeed);
-   right.set((output * -0.2) + driveSpeed);
     //if (count++%100 ==0)
       //System.out.println("PID Output: " + output);
   }

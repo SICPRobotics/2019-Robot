@@ -86,7 +86,7 @@ public class ElementManager {
 
     public double getDifference() {
         if (selectedHatch != null) {
-            System.out.println(selectedHatch.getCenter().x);
+            //System.out.println(selectedHatch.getCenter().x);
             return selectedHatch.getCenter().x;
         } else {
             return -0.0;

@@ -57,7 +57,8 @@ public class Robot extends TimedRobot
     //oi = new OI();
     //c = new Compressor(0);
     //c.setClosedLoopControl(true);
-    //INSERT CAMERA CODE HERE
+
+    //Camera code does not have to be inserted--all camera stuff is handled on the Pi
     j1 = new Joystick(RobotMap.k_joystick1);
     
     chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
@@ -135,18 +136,14 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic() 
   {
-   // Scheduler.getInstance().run();
+    Scheduler.getInstance().run();
     //driveTrain.cheesyDrive(j1);
-    //driveTrain.calibrateTalons(j1);
-    /*
     driveTrain.drive();
     Scheduler.getInstance().run();    
-    if(!vision)
+    if(!driveTrain.isEnabled())
     {
       driveTrain.cheesyDrive(j1);
     }
-    else if(vision) {}
-    */
   }
 
   @Override
