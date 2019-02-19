@@ -36,12 +36,13 @@ public class OI
     buttonBack.whenPressed(new MoveParallelogramUp());
     buttonStart.whenPressed(new MoveParallelogramDown());
 
-    j1.whenPressed(new StartVisionPID());
-    j1.whenReleased(new DisableVisionPID());
+    //These were all creating problems >:(
+    //j1.whenPressed(new StartVisionPID());
+    //j1.whenReleased(new DisableVisionPID());
 
-    j2.whenPressed(new Calibrate());
-    j3.whileHeld(new DriveElevator(.4));
-    j4.whileHeld(new DriveElevator(-.4));
+    //j2.whenPressed(new Calibrate());
+    //j3.whileHeld(new DriveElevator(.4));
+    //j4.whileHeld(new DriveElevator(-.4));
 
   }
 
