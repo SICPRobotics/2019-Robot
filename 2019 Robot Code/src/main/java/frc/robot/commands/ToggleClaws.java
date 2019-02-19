@@ -35,6 +35,7 @@ public class ToggleClaws extends Command
   @Override
   protected void end() 
   {
+    System.out.println("ToggleClaws end");
     Robot.claws.moveClaws(0);
   }
 

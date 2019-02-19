@@ -1,31 +1,28 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MoveElevatorMagic extends Command 
+public class MoveParallelogramDown extends Command 
 {
-  double targetPos;
-  Timer timer = new Timer();
-
-  public MoveElevatorMagic(double set) 
+  public MoveParallelogramDown() 
   {
-    requires(Robot.elevator);
-    targetPos = set;
+    requires(Robot.parallel);  
   }
 
   @Override
   protected void initialize() 
   {
-    System.out.println("MoveElevatorMagic init");
-    timer.start();
+    System.out.println("MoveParallelogramDown init");
   }
 
   @Override
   protected void execute() 
   {
-    Robot.elevator.magicMotion(targetPos);
+    if(Robot.parallel.bottomLimit())
+      Robot.parallel.drive(0);
+    else
+      Robot.parallel.drive(-0.1);
   }
 
   @Override
@@ -37,7 +34,7 @@ public class MoveElevatorMagic extends Command
   @Override
   protected void end() 
   {
-    System.out.println("MoveElevatorMagic end");
+    System.out.println("MoveParallelogramDown end");
   }
 
   @Override

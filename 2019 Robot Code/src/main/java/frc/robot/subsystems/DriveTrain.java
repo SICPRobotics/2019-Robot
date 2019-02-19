@@ -57,15 +57,14 @@ public class DriveTrain extends PIDSubsystem
     frontR.setSensorPhase(true);
     frontR.selectProfileSlot(0, 0);
     frontR.config_kF(0,.3); //example: 
-    frontR.config_kP(0,0.2);//.0682) example: .2
-    frontR.config_kI(0,.00);
+    frontR.config_kP(0,.2);//.0682) example: .2
+    frontR.config_kI(0,0);
     frontR.config_kD(0,0);
     frontR.configMotionCruiseVelocity(3000,100); //example: 15000
     frontR.configMotionAcceleration(2500,100); //example: 6000
     frontR.setSelectedSensorPosition(0);
 */
     rearR = new WPI_TalonSRX(1);
-   // rearR.follow(frontR);
     
     frontL = new WPI_TalonSRX(2);
     frontL.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
@@ -77,6 +76,14 @@ public class DriveTrain extends PIDSubsystem
     right = new SpeedControllerGroup(frontR, rearR);
 
     //robotBase = new DifferentialDrive(left, right);
+   /* rearL = new WPI_TalonSRX(2);
+    
+    left = new SpeedControllerGroup(frontL, rearL);
+    right = new SpeedControllerGroup(frontR, rearR);
+
+    robotBase = new DifferentialDrive(left, right);
+    robotBase.feedWatchdog(); //might mess stuff up */
+    //getWatchdog().setExpiration(100);
 
     //gyro = new ADXRS450_Gyro();
     status = "starting";
@@ -163,8 +170,7 @@ public class DriveTrain extends PIDSubsystem
   }
 
   @Override
-  protected void usePIDOutput(double output) 
-  {
+  protected void usePIDOutput(double output) {
     // Use output to drive your system, like a motor
     // e.g. yourMotor.set(output);
    // robotBase.tankDrive(0.5 + output, 0.5 - output);

@@ -4,19 +4,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
 
 public class Claws extends Subsystem 
 {
-  //motors: use RobotMap.k_claw1, RobotMap.k_claw2
   VictorSPX claw1, claw2;
 
   public Claws()
   {
-    claw1 = new VictorSPX(RobotMap.k_claw1);
-    claw2 = new VictorSPX(RobotMap.k_claw2);
+    /*claw1 = new VictorSPX(0);
+    claw2 = new VictorSPX(1);
     claw2.setInverted(true);
-    claw2.follow(claw1);
+    claw2.follow(claw1);*/
   }
   
   @Override

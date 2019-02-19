@@ -5,9 +5,12 @@ import frc.robot.Robot;
 
 public class DriveElevator extends Command 
 {
-  public DriveElevator() 
+  double speedy;
+
+  public DriveElevator(double speed) 
   {
     requires(Robot.elevator);
+    speedy = speed;
   }
 
   @Override
@@ -19,7 +22,8 @@ public class DriveElevator extends Command
   @Override
   protected void execute() 
   {
-    //Robot.elevator.slowDrive();
+    Robot.elevator.slowDrive(speedy);
+    System.out.println("height: "+Robot.elevator.elevatorHeight());
   }
 
   @Override
@@ -31,8 +35,15 @@ public class DriveElevator extends Command
   @Override
   protected void end() 
   {
+    System.out.println("DriveElevator end");
+    Robot.elevator.slowDrive(0);
   }
 
   @Override
-  protected void interrupted() {}
+  protected void interrupted() 
+  {
+    System.out.println("DriveElevator interrupted");
+    end();
+    //Robot.elevator1.slowDrive(0);
+  }
 }

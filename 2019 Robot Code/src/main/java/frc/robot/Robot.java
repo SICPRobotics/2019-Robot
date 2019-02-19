@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.net.InetAddress;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,6 +16,7 @@ import frc.robot.subsystems.Beak;
 import frc.robot.subsystems.Claws;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Parallelogram;
 
 public class Robot extends TimedRobot 
 {
@@ -24,8 +27,8 @@ public class Robot extends TimedRobot
   public static Elevator elevator;
   public static Beak beak;
   public static Claws claws;
+  public static Parallelogram parallel;
   public static OI oi;
-
   public static Joystick j1;
   Compressor c;
 
@@ -41,36 +44,42 @@ public class Robot extends TimedRobot
   {
     driveTrain = new DriveTrain();
 
+    //Connect to the Pi so that we can ping it later
     try {
       piAddress = InetAddress.getByName("10.58.22.48");
     } catch (Exception e) {
       e.printStackTrace();
     }
-   // driveTrain.resetGyro();
-    
-    //oi = new OI();
-
-    //driveTrain.resetGyro();
-    //elevator = new Elevator();
-    //beak = new Beak();
-    //claws = new Claws();
-    //oi = new OI();
+   
+    elevator = new Elevator();
+    beak = new Beak();
+    claws = new Claws();
+    parallel = new Parallelogram();
+    oi = new OI(); 
+    j1 = new Joystick(0);
     //c = new Compressor(0);
     //c.setClosedLoopControl(true);
-
-    //Camera code does not have to be inserted--all camera stuff is handled on the Pi
-    j1 = new Joystick(RobotMap.k_joystick1);
     
-    chooser.setDefaultOption("Auto Drive Off", new DriveOffPlatform());
+    chooser.setDefaultOption("Auto Drive Off", new SandStorm());
     chooser.addOption("Do Nothing", new DoNothing());
     SmartDashboard.putData("Auto mode", chooser);
 
     //driveTrain.enable();
-    
-    /*vision = false;
-    SmartDashboard.putBoolean("Running Vision", vision);
-    SmartDashboard.putData("Run Vision Alignment", new StartVisionPID());
-    SmartDashboard.putData("End Vision Alignment", new DisableVisionPID());*/
+
+    //We don't need to do this; the Pi will be the camera server for USB and IP cameras.
+    //Cameras will be streamed directly off of the Pi. Go to http://frcvision.local while connected to the robot to configure cameras.
+    /*try {
+			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
+		}
+		catch (Exception e){
+			System.out.println("failed camera 0"  + e);
+    }
+    try {
+			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(0);
+		}
+		catch (Exception e){
+			System.out.println("failed camera 10" + e);
+		}*/
   }
 
   @Override
@@ -101,7 +110,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
-    autoCommand = chooser.getSelected();
+    //autoCommand = chooser.getSelected();
 
     if (autoCommand != null) 
     {
