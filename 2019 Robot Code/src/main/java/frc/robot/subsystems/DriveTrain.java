@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -15,7 +14,6 @@ public class DriveTrain extends PIDSubsystem
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
-  ADXRS450_Gyro gyro; 
 
   public DriveTrain()
   {
@@ -48,8 +46,6 @@ public class DriveTrain extends PIDSubsystem
     robotBase = new DifferentialDrive(left, right);
     robotBase.feedWatchdog(); //might mess stuff up
     //getWatchdog().setExpiration(100);
-
-    //gyro = new ADXRS450_Gyro();
   }
   
   @Override
@@ -102,7 +98,7 @@ public class DriveTrain extends PIDSubsystem
     moveValue = moveValue * scale * -1;
     rotateValue = rotateValue * scale;
 
-    robotBase.arcadeDrive(moveValue, rotateValue, true);
+   robotBase.arcadeDrive(moveValue, rotateValue, true);
   }
   
   public void tankDrive(Joystick jL, Joystick jR) //test
@@ -116,19 +112,6 @@ public class DriveTrain extends PIDSubsystem
 
     left.set(leftValue);
     right.set(rightValue);    
-  }
-
-
-
-  public double resetGyro() //test
-  {
-    gyro.reset();
-    return gyro.getAngle();
-  }
-
-  public double gyroAngle() //test
-  {
-    return gyro.getAngle();
   }
 
   public double encDistance()

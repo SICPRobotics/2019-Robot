@@ -37,6 +37,7 @@ public class MoveElevatorMagic extends Command
   @Override
   protected void end() 
   {
+    Robot.elevator.slowDrive(0);
     System.out.println("MoveElevatorMagic end");
   }
 

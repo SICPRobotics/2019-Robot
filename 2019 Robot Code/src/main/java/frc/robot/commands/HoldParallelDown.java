@@ -3,38 +3,41 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MoveParallelogramDown extends Command 
+public class HoldParallelDown extends Command 
 {
-  public MoveParallelogramDown() 
+  boolean goDown;
+  public HoldParallelDown(boolean down) 
   {
     requires(Robot.parallel);  
+    goDown = down;
   }
 
   @Override
   protected void initialize() 
   {
-    System.out.println("MoveParallelogramDown init");
+    System.out.println("HoldParallelDown init");
   }
 
   @Override
   protected void execute() 
   {
-    if(Robot.parallel.bottomLimit())
-      Robot.parallel.drive(0);
-    else
-      Robot.parallel.drive(-0.1);
+    if (goDown)
+      Robot.parallel.drive(0.6);
   }
 
   @Override
   protected boolean isFinished() 
   {
+    if(Robot.parallel.bottomLimit())
+      return true;
     return false;
   }
 
   @Override
   protected void end() 
   {
-    System.out.println("MoveParallelogramDown end");
+    System.out.println("HoldParallelDown end");
+    Robot.parallel.drive(0);
   }
 
   @Override

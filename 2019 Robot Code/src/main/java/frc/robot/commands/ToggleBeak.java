@@ -21,10 +21,10 @@ public class ToggleBeak extends Command
   @Override
   protected void execute() 
   {
-    /*if (direction)
+    if (direction)
       Robot.beak.shutBeak();
     else if (!direction)
-      Robot.beak.openBeak();*/
+      Robot.beak.openBeak();
   }
 
   @Override

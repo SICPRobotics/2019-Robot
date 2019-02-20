@@ -9,7 +9,7 @@ public class Beak extends Subsystem
 
   public Beak()
   {
-    //beakSolo = new DoubleSolenoid(0,1);
+    beakSolo = new DoubleSolenoid(0,1);
   }
   
   @Override

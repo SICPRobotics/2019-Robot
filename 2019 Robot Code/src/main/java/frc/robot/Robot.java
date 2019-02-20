@@ -40,30 +40,30 @@ public class Robot extends TimedRobot
     beak = new Beak();
     claws = new Claws();
     parallel = new Parallelogram();
-    oi = new OI(); 
     j1 = new Joystick(0);
-    //c = new Compressor(0);
-    //c.setClosedLoopControl(true);
+    oi = new OI(); 
+    c = new Compressor();
+    c.setClosedLoopControl(true);
     
     chooser.setDefaultOption("Auto Drive Off", new SandStorm());
     chooser.addOption("Do Nothing", new DoNothing());
-    SmartDashboard.putData("Auto mode", chooser);
+    SmartDashboard.putData("Sandstorm", chooser);
 
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
 
-    try {
+   /*try {
 			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
 		catch (Exception e){
 			System.out.println("failed camera 0"  + e);
     }
-    try {
-			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(0);
+    /*try {
+			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
 		}
 		catch (Exception e){
 			System.out.println("failed camera 10" + e);
-		}
+		}*/
   }
 
   @Override
@@ -115,6 +115,7 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();    
+    //System.out.println("height: " + elevator.elevatorHeight());
     if(!vision)
     {
       driveTrain.cheesyDrive(j1);

@@ -38,6 +38,7 @@ public class Calibrate extends Command
   protected void end() 
   {
     Robot.elevator.setEncPosition(0);
+    System.out.println("Calibrate end" + Robot.elevator.elevatorHeight());
     Robot.elevator.slowDrive(0);
   }
 
