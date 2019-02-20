@@ -52,18 +52,18 @@ public class Robot extends TimedRobot
     vision = false;
     SmartDashboard.putBoolean("Running Vision", vision);
 
-   /*try {
+   try {
 			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
 		catch (Exception e){
 			System.out.println("failed camera 0"  + e);
     }
-    /*try {
+    try {
 			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
 		}
 		catch (Exception e){
 			System.out.println("failed camera 10" + e);
-		}*/
+		}
   }
 
   @Override
@@ -81,7 +81,7 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
-    //autoCommand = chooser.getSelected();
+    autoCommand = chooser.getSelected();
 
     if (autoCommand != null) 
     {

@@ -23,6 +23,8 @@ public class HoldParallelDown extends Command
   {
     if (goDown)
       Robot.parallel.drive(0.6);
+    else if(!goDown)
+      Robot.parallel.drive(-.5);
   }
 
   @Override

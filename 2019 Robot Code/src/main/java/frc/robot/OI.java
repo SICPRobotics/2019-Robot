@@ -31,36 +31,17 @@ public class OI
 
   public OI()
   {
-    buttonA.whenPressed(new GoToHeight(0)); //191413
+    buttonA.whenPressed(new GoToHeight(0)); 
     buttonB.whenPressed(new GoToHeight(762204));
-    buttonX.whileHeld(new DriveElevator(.3));
+    //buttonX.whileHeld(new DriveElevator(.3));
     buttonY.whenPressed(new GoToHeight(1280461));
     
+    buttonBack.whileHeld(new DriveElevator(-.3));
+    buttonStart.whileHeld(new DriveElevator(.3));
+
     buttonLB.whenPressed(new ToggleBeak());
-    //buttonRB.whenPressed(new MoveParallelogramUp());
-    buttonBack.whenPressed(new Calibrate());
-    //buttonStart.whenPressed(new HoldParallelDown(true));
+    buttonRB.whenPressed(new Calibrate());
     rightTrig.whenActive(new HoldParallelDown(true));
-    //right trigger: move parallelogram down while held
-
-    //j1.whenPressed(new StartVisionPID());
-    //j1.whenReleased(new DisableVisionPID());
-
-    j2.whenPressed(new Calibrate());
-    j3.whileHeld(new DriveElevator(.4));
-    j4.whileHeld(new DriveElevator(-.4));
-
+    leftTrig.whenActive(new HoldParallelDown(false));
   }
-
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
-
-  // Run the command while the button is being held down and interrupt it onceb
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
-
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
 }

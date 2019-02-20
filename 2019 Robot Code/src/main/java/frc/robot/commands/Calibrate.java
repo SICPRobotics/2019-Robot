@@ -7,7 +7,9 @@ import frc.robot.Robot;
 public class Calibrate extends Command 
 {
   Timer timer = new Timer();
-
+  double lastReading, newReading;
+  int nextSec = 1;
+ 
   public Calibrate() 
   {
     requires(Robot.elevator);
@@ -18,6 +20,8 @@ public class Calibrate extends Command
   {
     System.out.println("Calibrate init");
     timer.start();
+    lastReading = Robot.elevator.elevatorHeight();
+    nextSec = 1;
   }
 
   @Override
@@ -29,8 +33,16 @@ public class Calibrate extends Command
   @Override
   protected boolean isFinished() 
   {
-    if (timer.get() > 3)
+    if (timer.get() > 10)
       return true;
+    else if (timer.get() > nextSec)
+    {
+      newReading = Robot.elevator.elevatorHeight();
+      if (newReading - lastReading < 2000)
+        return true;
+      lastReading = newReading;
+      nextSec++;
+    }
     return false;
   }
 
@@ -40,6 +52,7 @@ public class Calibrate extends Command
     Robot.elevator.setEncPosition(0);
     System.out.println("Calibrate end" + Robot.elevator.elevatorHeight());
     Robot.elevator.slowDrive(0);
+    
   }
 
   @Override

@@ -124,4 +124,9 @@ public class DriveTrain extends PIDSubsystem
 
     return (leftEnc + rightEnc) / 2;
   }
+
+  public void drive(double speed)
+  {
+    robotBase.arcadeDrive(speed,0);
+  }
 }

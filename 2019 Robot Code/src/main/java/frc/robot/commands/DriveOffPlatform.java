@@ -17,20 +17,25 @@ public class DriveOffPlatform extends Command
   protected void initialize() 
   {
     System.out.println("DriveOffPlatform init");
-    Robot.driveTrain.invertLeft(true);
     timer.start();
   }
 
   @Override
   protected void execute() 
   {
-    Robot.driveTrain.magicDrive(4096*5);
+    if (timer.get() < 1)
+      Robot.driveTrain.drive(-1);
+    else if (timer.get() <2 )
+      Robot.driveTrain.drive(0);
+    else
+      Robot.driveTrain.drive(.4);
   }
 
   @Override
   protected boolean isFinished() 
   {
-    if (timer.get() > .5 && Robot.driveTrain.encSpeed() == 0)
+    System.out.println("timer: " + timer.get());
+    if (timer.get() > 4)
       return true;
     return false;
   }
@@ -38,7 +43,6 @@ public class DriveOffPlatform extends Command
   @Override
   protected void end() 
   {
-    Robot.driveTrain.invertLeft(false);
     System.out.println("DriveOffPlatform end");
   }
 
