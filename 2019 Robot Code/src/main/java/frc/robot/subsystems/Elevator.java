@@ -47,7 +47,6 @@ public class Elevator extends Subsystem
   {
     elevator1.set(ControlMode.PercentOutput, speed);
     elevator2.set(ControlMode.PercentOutput,speed);
-    //System.out.println("I'm in slow drive");
   }
 
   public double elevatorHeight()
