@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -19,11 +20,12 @@ public class OI
   Button buttonStart = new JoystickButton(xbox, 8); //open
   Button leftThumb = new JoystickButton(xbox, 9); //open
   Button rightThumb = new JoystickButton(xbox, 10); //open
- 
-  Button j1 = new JoystickButton(Robot.j1, 1);
-  Button j2 = new JoystickButton(Robot.j1, 2);
-  Button j3 = new JoystickButton(Robot.j1, 3);
-  Button j4 = new JoystickButton(Robot.j1, 4);
+
+  Joystick joystick = new Joystick(0);
+  Button j1 = new JoystickButton(joystick, 1);
+  Button j2 = new JoystickButton(joystick, 2);
+  Button j3 = new JoystickButton(joystick, 3);
+  Button j4 = new JoystickButton(joystick, 4);
 
   public OI()
   {
@@ -36,13 +38,13 @@ public class OI
     buttonBack.whenPressed(new MoveParallelogramUp());
     buttonStart.whenPressed(new MoveParallelogramDown());
 
-    //These were all creating problems >:(
-    //j1.whenPressed(new StartVisionPID());
-    //j1.whenReleased(new DisableVisionPID());
+    
+    j2.whenPressed(new StartVisionPID());
+    j2.whenReleased(new DisableVisionPID());
 
     //j2.whenPressed(new Calibrate());
-    //j3.whileHeld(new DriveElevator(.4));
-    //j4.whileHeld(new DriveElevator(-.4));
+    j3.whileHeld(new DriveElevator(.4));
+    j4.whileHeld(new DriveElevator(-.4));
 
   }
 

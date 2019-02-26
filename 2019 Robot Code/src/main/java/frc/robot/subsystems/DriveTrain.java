@@ -75,7 +75,7 @@ public class DriveTrain extends PIDSubsystem
     left = new SpeedControllerGroup(frontL, rearL);
     right = new SpeedControllerGroup(frontR, rearR);
 
-    //robotBase = new DifferentialDrive(left, right);
+    robotBase = new DifferentialDrive(left, right);
    /* rearL = new WPI_TalonSRX(2);
     
     left = new SpeedControllerGroup(frontL, rearL);
@@ -267,7 +267,7 @@ public class DriveTrain extends PIDSubsystem
 
   public void drive()
   {
-    robotBase.tankDrive(.3, .3);
+    //robotBase.tankDrive(.3, .3);
   }
   
   //Returns the rotation based on the FoV of the camera. Does not take into account current gyro rotation. 
