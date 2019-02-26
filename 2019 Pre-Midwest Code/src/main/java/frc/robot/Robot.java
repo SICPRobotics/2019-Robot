@@ -25,6 +25,8 @@ public class Robot extends TimedRobot
   Command autoCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
+  boolean invert = false;
+
   @Override
   public void robotInit() 
   {
@@ -83,7 +85,7 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
     if (!autoCommand.isRunning())
-      driveTrain.cheesyDrive(j1);
+      driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(2));
   }
 
   @Override
@@ -99,7 +101,13 @@ public class Robot extends TimedRobot
   public void teleopPeriodic() 
   {
     Scheduler.getInstance().run();    
-    driveTrain.cheesyDrive(j1);
+    if(!invert)
+       driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(2));
+    else if(invert)
+      driveTrain.cheesyDrive(j1.getRawAxis(1)*-1,j1.getRawAxis(0)*-1,j1.getRawAxis(2));
+  
+    if(j1.getRawButton(2))
+      invert = !invert;
   }
 
   @Override

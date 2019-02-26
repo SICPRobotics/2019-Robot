@@ -79,13 +79,9 @@ public class DriveTrain extends PIDSubsystem
     return frontR.getSelectedSensorVelocity();
   }
 
-  public void cheesyDrive(Joystick j) 
+  public void cheesyDrive(double moveValue, double rotateValue, double scale) 
   {
-    double scale = j.getRawAxis(3) * -1;
     scale = ((scale + 1) / 5) + .6;
-
-    double moveValue = j.getRawAxis(1);
-    double rotateValue = j.getRawAxis(0);
 
     //Dead zone on y axis value
     if (Math.abs(moveValue) < .005)

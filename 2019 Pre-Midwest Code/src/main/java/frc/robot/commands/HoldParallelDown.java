@@ -1,21 +1,26 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class HoldParallelDown extends Command 
 {
   boolean goDown;
+  Timer timer;
+
   public HoldParallelDown(boolean down) 
   {
     requires(Robot.parallel);  
     goDown = down;
+    timer = new Timer();
   }
 
   @Override
   protected void initialize() 
   {
     System.out.println("HoldParallelDown init");
+    timer.start();
   }
 
   @Override
@@ -30,8 +35,10 @@ public class HoldParallelDown extends Command
   @Override
   protected boolean isFinished() 
   {
-    if(Robot.parallel.bottomLimit())
+    if(goDown && Robot.parallel.bottomLimit())
       return true;
+    //else if(!goDown && timer.get()<2)
+      //return true;
     return false;
   }
 
@@ -40,6 +47,7 @@ public class HoldParallelDown extends Command
   {
     System.out.println("HoldParallelDown end");
     Robot.parallel.drive(0);
+    timer.reset();
   }
 
   @Override
