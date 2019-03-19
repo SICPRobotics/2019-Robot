@@ -10,6 +10,7 @@ public class Beak extends Subsystem
   public Beak()
   {
     beakSolo = new DoubleSolenoid(0,1);
+    //beakSolo.set(DoubleSolenoid.Value.kForward);
   }
   
   @Override

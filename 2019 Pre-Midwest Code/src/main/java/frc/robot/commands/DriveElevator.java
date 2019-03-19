@@ -36,7 +36,9 @@ public class DriveElevator extends Command
   protected void end() 
   {
     System.out.println("DriveElevator end");
-    Robot.elevator.slowDrive(0);
+    //Robot.elevator.slowDrive(0);
+    MoveElevatorMagic hold = new MoveElevatorMagic(Robot.elevator.elevatorHeight());
+    hold.start();
   }
 
   @Override

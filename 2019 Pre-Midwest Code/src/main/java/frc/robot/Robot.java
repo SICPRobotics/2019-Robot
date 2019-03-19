@@ -4,6 +4,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -22,10 +23,14 @@ public class Robot extends TimedRobot
   public static Joystick j1;
   Compressor c;
 
+  PWMTalonSRX leds;
+
   Command autoCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
 
-  boolean invert = false;
+  public static boolean invert = false;
+  public static boolean open = true;
+  public double ledSpeed;
 
   @Override
   public void robotInit() 
@@ -39,10 +44,12 @@ public class Robot extends TimedRobot
     c = new Compressor();
     c.setClosedLoopControl(true);
     
-    chooser.setDefaultOption("Auto Drive Off", new SandStorm());
-    chooser.addOption("Do Nothing", new DoNothing());
-    SmartDashboard.putData("Sandstorm", chooser);
-
+    leds = new PWMTalonSRX(0);
+    ledSpeed = -.65;
+    //chooser.setDefaultOption("Rainbow", new Leds(.88);
+    //chooser.addOption("Do Nothing", new DoNothing());
+    //SmartDashboard.putData("Sandstorm", chooser);
+    SmartDashboard.putBoolean("Beak Open?", open);
    try {
 			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
@@ -54,7 +61,7 @@ public class Robot extends TimedRobot
 		}
 		catch (Exception e){
 			System.out.println("failed camera 10" + e);
-		}
+    }
   }
 
   @Override
@@ -72,20 +79,22 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
-    autoCommand = chooser.getSelected();
+    /*autoCommand =
+     chooser.getSelected();
 
     if (autoCommand != null) 
     {
       autoCommand.start();
-    }
+    }*/
   }
 
   @Override
   public void autonomousPeriodic() 
   {
     Scheduler.getInstance().run();
-    if (!autoCommand.isRunning())
-      driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(2));
+   // if (!autoCommand.isRunning())
+    driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(3)*-1);
+    leds.set(ledSpeed);
   }
 
   @Override
@@ -102,12 +111,16 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();    
     if(!invert)
-       driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(2));
+       driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(3)*-1);
     else if(invert)
-      driveTrain.cheesyDrive(j1.getRawAxis(1)*-1,j1.getRawAxis(0)*-1,j1.getRawAxis(2));
-  
-    if(j1.getRawButton(2))
-      invert = !invert;
+    {
+      driveTrain.cheesyDrive(j1.getRawAxis(1)*-1,j1.getRawAxis(0),j1.getRawAxis(3)*-1);
+      //System.out.println("running inverted");
+    }
+    leds.set(ledSpeed);
+    SmartDashboard.putBoolean("Beak Open?", open);
+    SmartDashboard.putBoolean("Inverted?", invert);
+   
   }
 
   @Override

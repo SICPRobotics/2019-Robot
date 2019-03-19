@@ -5,7 +5,7 @@ import frc.robot.Robot;
 
 public class ToggleBeak extends Command 
 {
-  public boolean direction = true;
+  public boolean direction = false;
 
   public ToggleBeak() 
   {
@@ -38,6 +38,7 @@ public class ToggleBeak extends Command
   {
     System.out.println("ToggleBeak end");
     direction = !direction;
+    Robot.open = !Robot.open;
   }
 
   @Override

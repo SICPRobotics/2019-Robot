@@ -27,7 +27,7 @@ public class Calibrate extends Command
   @Override
   protected void execute() 
   {
-    Robot.elevator.slowDrive(.082);
+    Robot.elevator.slowDrive(.075); //.082
   }
 
   @Override

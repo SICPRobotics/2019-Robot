@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class DoNothing extends Command 
 {
@@ -12,7 +13,10 @@ public class DoNothing extends Command
     System.out.println("DoNothing init");
   }
   @Override
-  protected void execute() {}
+  protected void execute() 
+  {
+    Robot.beak.openBeak();
+  }
   @Override
   protected boolean isFinished() 
   {

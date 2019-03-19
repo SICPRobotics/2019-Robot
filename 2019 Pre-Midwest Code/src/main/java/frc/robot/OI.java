@@ -1,3 +1,4 @@
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,16 +31,21 @@ public class OI
   public OI()
   {
     buttonA.whenPressed(new GoToHeight(0)); 
-    buttonB.whenPressed(new GoToHeight(762204));
+    buttonB.whenPressed(new GoToHeight(779204));
 
-    buttonY.whenPressed(new GoToHeight(1280461));
+    buttonY.whenPressed(new GoToHeight(1292000));
+
+    //300000));//1314461));
     
     buttonBack.whileHeld(new DriveElevator(-.3));
     buttonStart.whileHeld(new DriveElevator(.3));
+
 
     buttonLB.whenPressed(new ToggleBeak());
     buttonRB.whenPressed(new Calibrate());
     rightTrig.whenActive(new HoldParallelDown(true));
     leftTrig.whenActive(new HoldParallelDown(false));
+
+    j2.whenPressed(new Invert());
   }
 }

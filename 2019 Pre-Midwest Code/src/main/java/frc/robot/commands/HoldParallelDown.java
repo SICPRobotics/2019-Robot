@@ -27,9 +27,10 @@ public class HoldParallelDown extends Command
   protected void execute() 
   {
     if (goDown)
-      Robot.parallel.drive(0.6);
+      Robot.parallel.drive(0.65); //.75
+
     else if(!goDown)
-      Robot.parallel.drive(-.5);
+      Robot.parallel.drive(-.37); //-.5
   }
 
   @Override
@@ -37,8 +38,8 @@ public class HoldParallelDown extends Command
   {
     if(goDown && Robot.parallel.bottomLimit())
       return true;
-    //else if(!goDown && timer.get()<2)
-      //return true;
+    else if(!goDown && timer.get()>1)
+      return true;
     return false;
   }
 
