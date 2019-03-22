@@ -37,9 +37,20 @@ public class HoldParallelDown extends Command
   protected boolean isFinished() 
   {
     if(goDown && Robot.parallel.bottomLimit())
+    {
+      System.out.println("goDown and bottomLimit");
       return true;
+    }
     else if(!goDown && timer.get()>1)
+    {
+      System.out.println("!goDown and timer > 1");
       return true;
+    }
+    else if(timer.get()>5)
+    {
+      System.out.println("timer past 5");
+      return true;
+    }
     return false;
   }
 

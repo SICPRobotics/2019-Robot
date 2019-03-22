@@ -3,9 +3,11 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,8 +32,9 @@ public class Robot extends TimedRobot
 
   public static boolean invert = false;
   public static boolean open = true;
+  public static boolean lessThanThirty= false;
   public double ledSpeed;
-
+  
   @Override
   public void robotInit() 
   {
@@ -44,12 +47,33 @@ public class Robot extends TimedRobot
     c = new Compressor();
     c.setClosedLoopControl(true);
     
+    DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
+    System.out.println("RobotInit alliance: " + alliance);
+    if (alliance == Alliance.Blue)
+    {
+      ledSpeed = -.65;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+    else if (alliance == Alliance.Red)
+    {
+      ledSpeed = -.63;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+    else 
+    {
+      ledSpeed = .5;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+
     leds = new PWMTalonSRX(0);
-    ledSpeed = -.65;
+    //ledSpeed = -.65; //-.63 is red
     //chooser.setDefaultOption("Rainbow", new Leds(.88);
     //chooser.addOption("Do Nothing", new DoNothing());
     //SmartDashboard.putData("Sandstorm", chooser);
     SmartDashboard.putBoolean("Beak Open?", open);
+    SmartDashboard.putBoolean("Inverted?", invert);
+    SmartDashboard.putBoolean("Last 30 Sec",lessThanThirty);
+
    try {
 			UsbCamera cam1 = CameraServer.getInstance().startAutomaticCapture(0);
 		}
@@ -79,6 +103,24 @@ public class Robot extends TimedRobot
   @Override
   public void autonomousInit() 
   {
+    DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
+    System.out.println("AutoInit alliance: " + alliance);
+    if (alliance == Alliance.Blue)
+    {
+      ledSpeed = -.65;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+    else if (alliance == Alliance.Red)
+    {
+      ledSpeed = -.63;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+    else 
+    {
+      ledSpeed = .5;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+
     /*autoCommand =
      chooser.getSelected();
 
@@ -93,7 +135,13 @@ public class Robot extends TimedRobot
   {
     Scheduler.getInstance().run();
    // if (!autoCommand.isRunning())
-    driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(3)*-1);
+   if(!invert)
+   driveTrain.cheesyDrive(j1.getRawAxis(1),j1.getRawAxis(0),j1.getRawAxis(3)*-1);
+    else if(invert)
+    {
+      driveTrain.cheesyDrive(j1.getRawAxis(1)*-1,j1.getRawAxis(0),j1.getRawAxis(3)*-1);
+      //System.out.println("running inverted");
+    }
     leds.set(ledSpeed);
   }
 
@@ -103,6 +151,23 @@ public class Robot extends TimedRobot
     if (autoCommand != null) 
     {
       autoCommand.cancel();
+    }
+    DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
+    System.out.println("TeleopInit alliance: " + alliance);
+    if (alliance == Alliance.Blue)
+    {
+      ledSpeed = -.65;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+    else if (alliance == Alliance.Red)
+    {
+      ledSpeed = -.63;
+      System.out.println("LED Speed: " + ledSpeed);
+    }
+    else 
+    {
+      ledSpeed = .5;
+      System.out.println("LED Speed: " + ledSpeed);
     }
   }
 
@@ -118,9 +183,13 @@ public class Robot extends TimedRobot
       //System.out.println("running inverted");
     }
     leds.set(ledSpeed);
+
+    if(DriverStation.getInstance().getMatchTime() < 30)
+      lessThanThirty = true;
+
     SmartDashboard.putBoolean("Beak Open?", open);
     SmartDashboard.putBoolean("Inverted?", invert);
-   
+    SmartDashboard.putBoolean("Last 30 Sec",lessThanThirty);
   }
 
   @Override
