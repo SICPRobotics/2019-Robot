@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import io.github.pseudoresonance.pixy2api.Pixy2;
+import io.github.pseudoresonance.pixy2api.links.SPILink;
 
-public class Robot extends TimedRobot 
+ public class Robot extends TimedRobot 
 {
   public static DriveTrain driveTrain;
   public static Elevator elevator;
@@ -46,6 +48,11 @@ public class Robot extends TimedRobot
     oi = new OI(); 
     c = new Compressor();
     c.setClosedLoopControl(true);
+
+    Pixy2 pixy = Pixy2.createInstance(new SPILink());
+    pixy.init();
+    pixy.setLamp((byte) 1, (byte) 1);
+    pixy.setLED(200, 30, 255);
     
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     System.out.println("RobotInit alliance: " + alliance);
@@ -81,7 +88,8 @@ public class Robot extends TimedRobot
 			System.out.println("failed camera 0"  + e);
     }
     try {
-			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
+      UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
+      
 		}
 		catch (Exception e){
 			System.out.println("failed camera 10" + e);

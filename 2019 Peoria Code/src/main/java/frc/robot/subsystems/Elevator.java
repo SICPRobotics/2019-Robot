@@ -15,7 +15,7 @@ public class Elevator extends Subsystem
     elevator1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,0);
     elevator1.setSensorPhase(false);
     elevator1.selectProfileSlot(0, 0);
-    elevator1.config_kF(0,.2);//.05 calculated
+    elevator1.config_kF(+-0,.2);//.05 calculated
     elevator1.config_kP(0, 0.15);
     elevator1.config_kI(0, 0);
     elevator1.config_kD(0, 0);
