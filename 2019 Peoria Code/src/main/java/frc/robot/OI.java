@@ -30,15 +30,15 @@ public class OI
 
   public OI()
   {
-    buttonA.whenPressed(new GoToHeight(inchestToElevatorHeight(3.5714)); //100000
+    buttonA.whenPressed(new GoToHeight(inchesToElevatorHeight(3.5714))); //100000
     //low: 16.5, 19
 
     //buttonB.whenPressed(new GoToHeight(779204));
-    buttonB.whenPressed(new GoToHeight(inchestToElevatorHeight(30.8287))); //863204
+    buttonB.whenPressed(new GoToHeight(inchesToElevatorHeight(30.8287))); //863204
     //middle: 44, 47
 
     //buttonY.whenPressed(new GoToHeight(1292000));
-    buttonY.whenPressed(new GoToHeight(inchestToElevatorHeight(48.8214))); //1367000
+    buttonY.whenPressed(new GoToHeight(inchesToElevatorHeight(48.8214))); //1367000
     //high:
 
     //300000));//1314461));
