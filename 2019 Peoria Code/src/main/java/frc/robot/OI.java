@@ -30,7 +30,7 @@ public class OI
 
   public OI()
   {
-    buttonA.whenPressed(new GoToHeight(inchesToElevatorHeight(3.5714))); //100000
+    buttonA.whenPressed(new GoToHeight(inchesToElevatorHeight(4.25))); //100000
     //low: 16.5, 19
 
     //buttonB.whenPressed(new GoToHeight(779204));
