@@ -38,7 +38,7 @@ public class OI
     //middle: 44, 47
 
     //buttonY.whenPressed(new GoToHeight(1292000));
-    buttonY.whenPressed(new GoToHeight(1382000));
+    buttonY.whenPressed(new GoToHeight(1367000));
     //high:
 
     //300000));//1314461));

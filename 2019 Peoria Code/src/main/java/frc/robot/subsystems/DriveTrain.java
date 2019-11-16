@@ -83,23 +83,25 @@ public class DriveTrain extends PIDSubsystem
   {
     return frontR.getSelectedSensorVelocity();
   }
-
-  public void cheesyDrive(double moveValue, double rotateValue, double scale) 
+  private double currentMoveValue = 0.0;
+  public void cheesyDrive(double desiredMoveValue, double rotateValue, double scale) 
   {
     scale = ((scale + 1) / 5) + .6;
 
     //Dead zone on y axis value
-    if (Math.abs(moveValue) < .005)
-      moveValue = 0;
+    if (Math.abs(desiredMoveValue) < .005)
+      desiredMoveValue = 0;
     
     //Dead zone on x axis only if y value is small
-    if (Math.abs(rotateValue) < .005 && Math.abs(moveValue) < .1)
+    if (Math.abs(rotateValue) < .005 && Math.abs(desiredMoveValue) < .1)
       rotateValue = 0;
     
-    moveValue = moveValue * scale * -1;
+    desiredMoveValue = desiredMoveValue * scale * -1;
     rotateValue = rotateValue * scale;
 
-   robotBase.arcadeDrive(moveValue, rotateValue, true);
+    currentMoveValue = currentMoveValue + ((desiredMoveValue - currentMoveValue > 0 ? 1 : -1) * Math.min(Math.abs(desiredMoveValue - currentMoveValue),0.1));
+
+   robotBase.arcadeDrive(currentMoveValue, rotateValue, true);
   }
   
   public void tankDrive(Joystick jL, Joystick jR) 
