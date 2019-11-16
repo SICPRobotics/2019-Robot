@@ -10,9 +10,9 @@ public class OI
 {
   public static XboxController xbox = new XboxController(1);
 
-  Button buttonA = new JoystickButton(xbox, 1); 
-  Button buttonB = new JoystickButton(xbox, 2); 
-  Button buttonX = new JoystickButton(xbox, 3); //open
+  Button buttonX = new JoystickButton(xbox, 1); 
+  Button buttonA = new JoystickButton(xbox, 2); 
+  Button buttonB = new JoystickButton(xbox, 3); //open
   Button buttonY = new JoystickButton(xbox, 4); 
   Button buttonLB = new JoystickButton(xbox, 5); 
   Button buttonRB = new JoystickButton(xbox, 6); 
@@ -30,10 +30,16 @@ public class OI
 
   public OI()
   {
-    buttonA.whenPressed(new GoToHeight(0)); 
-    buttonB.whenPressed(new GoToHeight(779204));
+    buttonA.whenPressed(new GoToHeight(100000)); 
+    //low: 16.5, 19
 
-    buttonY.whenPressed(new GoToHeight(1292000));
+    //buttonB.whenPressed(new GoToHeight(779204));
+    buttonB.whenPressed(new GoToHeight(863204));
+    //middle: 44, 47
+
+    //buttonY.whenPressed(new GoToHeight(1292000));
+    buttonY.whenPressed(new GoToHeight(1382000));
+    //high:
 
     //300000));//1314461));
     

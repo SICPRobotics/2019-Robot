@@ -34,6 +34,8 @@ public class Robot extends TimedRobot
   public static boolean open = true;
   public static boolean lessThanThirty= false;
   public double ledSpeed;
+
+  DriverStation ds;
   
   @Override
   public void robotInit() 
@@ -120,7 +122,7 @@ public class Robot extends TimedRobot
       ledSpeed = .5;
       System.out.println("LED Speed: " + ledSpeed);
     }
-
+    leds.set(ledSpeed);
     /*autoCommand =
      chooser.getSelected();
 
@@ -142,12 +144,16 @@ public class Robot extends TimedRobot
       driveTrain.cheesyDrive(j1.getRawAxis(1)*-1,j1.getRawAxis(0),j1.getRawAxis(3)*-1);
       //System.out.println("running inverted");
     }
-    leds.set(ledSpeed);
+    //leds.set(ledSpeed);
+    SmartDashboard.putBoolean("Beak Open?", open);
+    SmartDashboard.putBoolean("Inverted?", invert);
   }
-
+  
   @Override
   public void teleopInit() 
   {
+    ds = DriverStation.getInstance();
+
     if (autoCommand != null) 
     {
       autoCommand.cancel();
@@ -169,6 +175,7 @@ public class Robot extends TimedRobot
       ledSpeed = .5;
       System.out.println("LED Speed: " + ledSpeed);
     }
+    leds.set(ledSpeed);
   }
 
   @Override
@@ -180,11 +187,10 @@ public class Robot extends TimedRobot
     else if(invert)
     {
       driveTrain.cheesyDrive(j1.getRawAxis(1)*-1,j1.getRawAxis(0),j1.getRawAxis(3)*-1);
-      //System.out.println("running inverted");
     }
-    leds.set(ledSpeed);
+    //leds.set(ledSpeed);
 
-    if(DriverStation.getInstance().getMatchTime() < 30)
+    if(ds.getMatchTime() < 30)
       lessThanThirty = true;
 
     SmartDashboard.putBoolean("Beak Open?", open);

@@ -1,3 +1,6 @@
+// Teddy Braman - 11/05/19
+// First Robot Application
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -14,6 +17,7 @@ public class DriveTrain extends PIDSubsystem
   WPI_TalonSRX frontL, rearL, frontR, rearR;
   DifferentialDrive robotBase;
   SpeedControllerGroup left, right;
+
 
   public DriveTrain()
   {
@@ -46,6 +50,7 @@ public class DriveTrain extends PIDSubsystem
     robotBase = new DifferentialDrive(left, right);
     robotBase.feedWatchdog(); //might mess stuff up
     //getWatchdog().setExpiration(100);
+
   }
   
   @Override
