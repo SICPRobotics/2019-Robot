@@ -5,7 +5,7 @@ import frc.robot.Robot;
 
 public class ToggleBeak extends Command 
 {
-  public boolean direction = false;
+  public boolean direction = true;
 
   public ToggleBeak() 
   {
