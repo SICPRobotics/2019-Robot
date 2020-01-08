@@ -46,8 +46,8 @@ public class Robot extends TimedRobot
     parallel = new Parallelogram();
     j1 = new Joystick(0);
     oi = new OI(); 
-    //c = new Compressor();
-   // c.setClosedLoopControl(true);
+    c = new Compressor();
+    c.setClosedLoopControl(true);
     
     DriverStation.Alliance alliance = DriverStation.getInstance().getAlliance();
     System.out.println("RobotInit alliance: " + alliance);
@@ -82,12 +82,12 @@ public class Robot extends TimedRobot
 		catch (Exception e){
 			System.out.println("failed camera 0"  + e);
     }
-    try {
+    /*try {
 			UsbCamera cam2 = CameraServer.getInstance().startAutomaticCapture(1);
 		}
 		catch (Exception e){
 			System.out.println("failed camera 10" + e);
-    }
+    }*/
   }
 
   @Override
